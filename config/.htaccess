@@ -1,0 +1,3 @@
+# Folder ini tidak boleh diakses langsung dari web.
+# Satu-satunya pintu masuk aplikasi adalah /public/index.php.
+Require all denied

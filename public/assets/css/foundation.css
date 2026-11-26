@@ -1,0 +1,864 @@
+/* =========================================================================
+   FOUNDATION.CSS — Warung Maem Jadoel
+   Pengganti Bootstrap 5: design tokens + tipografi + komponen dasar.
+   Dipuat SEBELUM app.css. Semua gaya halaman tetap tinggal di app.css;
+   file ini hanya menyediakan "fondasi" yang dulu diberikan Bootstrap.
+   Ubah warna/font/radius di :root di bawah, seluruh aplikasi ikut berubah.
+   ========================================================================= */
+/* ---------------------------------------------------------------
+   1. DESIGN TOKENS (sumber tunggal)
+   --------------------------------------------------------------- */
+:root {
+  /* Warna brand */
+  --c-ink: #2f2a26;
+  --c-ink-strong: #171411;
+  --c-muted: #756d66;
+  --c-paper: #fbfaf7;
+  --c-surface: #f3efe8;
+  --c-accent: #8a4f32;
+  --c-accent-dark: #603724;
+  --c-line: #e5ddd3;
+  --c-white: #fff;
+  /* Warna status */
+  --c-success: #4c6250;
+  --c-success-bg: #e9f0ea;
+  --c-danger: #a33a2e;
+  --c-danger-bg: #f9e9e6;
+  --c-warning: #a3710f;
+  --c-warning-bg: #faf3e2;
+  /* Tipografi — SATU pasangan font untuk seluruh aplikasi */
+  --font-sans: "Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-display: "Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* Skala font */
+  --fs-xs: .72rem;
+  --fs-sm: .82rem;
+  --fs-md: .94rem;
+  --fs-base: 15px;
+  --fs-lg: 1.1rem;
+  /* Radius & bayangan */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 2px 8px rgba(55,38,25,.05);
+  --shadow: 0 10px 30px rgba(55,38,25,.06);
+  --shadow-hover: 0 14px 34px rgba(55,38,25,.10);
+  /* Spasi */
+  --sp-1: .25rem;
+  --sp-2: .5rem;
+  --sp-3: 1rem;
+  --sp-4: 1.5rem;
+  --sp-5: 3rem;
+  --gutter: 1.5rem;
+  /* Z-index */
+  --z-modal: 1055;
+  --z-backdrop: 1050;
+}
+/* ---------------------------------------------------------------
+   2. TIPOGRAFI SELARAS
+   Semua elemen memakai pasangan font yang sama: --font-sans untuk
+   teks/UI, --font-display untuk judul (tracking rapat, tanpa campur
+   serif acak). Ukuran judul mengikuti skala konsisten di bawah.
+   --------------------------------------------------------------- */
+html {
+  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
+}
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  color: var(--c-ink);
+  background: var(--c-white);
+  margin: 0;
+}
+h1,h2,h3,h4,h5,h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.015em;
+  color: var(--c-ink);
+  margin: 0 0 .5em;
+}
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.55rem;
+}
+h4 {
+  font-size: 1.25rem;
+}
+h5 {
+  font-size: 1rem;
+}
+h6 {
+  font-size: .85rem;
+}
+p {
+  margin: 0 0 1rem;
+}
+a {
+  color: var(--c-accent);
+}
+strong,b {
+  font-weight: 700;
+}
+small,.small {
+  font-size: var(--fs-sm);
+}
+code {
+  font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size: .9em;
+  background: var(--c-surface);
+  padding: .15em .4em;
+  border-radius: 6px;
+}
+input,select,textarea,button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+img,svg,iframe {
+  max-width: 100%;
+}
+/* Ikon inline dari helper icon() */
+.ico {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  display: inline-block;
+  vertical-align: -.2em;
+}
+.ico.is-empty {
+  opacity: .32;
+}
+/* Reset dasar */
+*,*::before,*::after {
+  box-sizing: border-box;
+}
+/* ---------------------------------------------------------------
+   3. GRID & LAYOUT (container, row, col-*)
+   --------------------------------------------------------------- */
+.container {
+  width: 100%;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  margin-inline: auto;
+}
+@media(min-width:576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+@media(min-width:768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+@media(min-width:992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+@media(min-width:1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+@media(min-width:1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-3);
+}
+.row>* {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+.row.g-2 {
+  gap: var(--sp-2);
+}
+.row.g-3 {
+  gap: var(--sp-3);
+}
+.row.g-4 {
+  gap: var(--sp-4);
+}
+/* Kolom: lebar dikompensasi gap agar pas 12 kolom per baris.
+   Faktor = (12 - k)/12 × gap, dengan k = jumlah kolom yang dicakup. */
+.col-5 {
+  width: calc(41.6667% - (var(--sp-3) * 7 / 12));
+}
+.col-7 {
+  width: calc(58.3333% - (var(--sp-3) * 5 / 12));
+}
+.col-12 {
+  width: 100%;
+}
+@media(min-width:768px) {
+  .col-md-2 {
+    width: calc(16.6667% - (var(--sp-3) * 10 / 12));
+  }
+  .col-md-3 {
+    width: calc(25% - (var(--sp-3) * 9 / 12));
+  }
+  .col-md-4 {
+    width: calc(33.3333% - (var(--sp-3) * 8 / 12));
+  }
+  .col-md-5 {
+    width: calc(41.6667% - (var(--sp-3) * 7 / 12));
+  }
+  .col-md-6 {
+    width: calc(50% - (var(--sp-3) * 6 / 12));
+  }
+  .col-md-8 {
+    width: calc(66.6667% - (var(--sp-3) * 4 / 12));
+  }
+}
+@media(min-width:992px) {
+  .col-lg-5 {
+    width: calc(41.6667% - (var(--sp-3) * 7 / 12));
+  }
+  .col-lg-7 {
+    width: calc(58.3333% - (var(--sp-3) * 5 / 12));
+  }
+}
+/* Gap kecil khusus grid form (g-2) */
+.row.g-2 .col-5,.row.g-2 .col-7 {
+  width: auto;
+  flex: 1 1 auto;
+}
+@media(min-width:768px) {
+  .row.g-2 .col-7 {
+    flex: 0 0 58.3333%;
+    width: 58.3333%;
+  }
+  .row.g-2 .col-5 {
+    flex: 0 0 41.6667%;
+    width: 41.6667%;
+  }
+}
+/* ---------------------------------------------------------------
+   4. TOMBOL
+   --------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45em;
+  padding: .5rem 1rem;
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-ink);
+  font-weight: 600;
+  font-size: var(--fs-md);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s ease,border-color .15s ease,color .15s ease,box-shadow .15s ease;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+.btn:disabled,.btn.disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.btn .ico {
+  width: 1.1em;
+  height: 1.1em;
+}
+.btn-dark {
+  background: var(--c-ink);
+  border-color: var(--c-ink);
+  color: #fff;
+}
+.btn-dark:hover {
+  background: var(--c-ink-strong);
+  border-color: var(--c-ink-strong);
+  color: #fff;
+}
+.btn-primary {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--c-accent-dark);
+  border-color: var(--c-accent-dark);
+  color: #fff;
+}
+.btn-success {
+  background: var(--c-success);
+  border-color: var(--c-success);
+  color: #fff;
+}
+.btn-success:hover {
+  filter: brightness(.94);
+  color: #fff;
+}
+.btn-warning {
+  background: #eab43a;
+  border-color: #eab43a;
+  color: #4a3606;
+}
+.btn-warning:hover {
+  filter: brightness(.95);
+  color: #4a3606;
+}
+.btn-link {
+  color: var(--c-accent);
+  text-decoration: underline;
+  padding-left: .25rem;
+  padding-right: .25rem;
+}
+.btn-secondary-soft {
+  background: #fff;
+  border-color: var(--c-line);
+  color: var(--c-ink);
+}
+.btn-secondary-soft:hover {
+  background: var(--c-surface);
+  border-color: #d2c8bd;
+}
+.btn-outline-dark {
+  background: transparent;
+  border-color: #b8afa5;
+  color: var(--c-ink);
+}
+.btn-outline-dark:hover {
+  background: var(--c-ink);
+  border-color: var(--c-ink);
+  color: #fff;
+}
+.btn-outline-secondary {
+  background: transparent;
+  border-color: var(--c-line);
+  color: var(--c-muted);
+}
+.btn-outline-secondary:hover {
+  background: var(--c-surface);
+  color: var(--c-ink);
+}
+.btn-outline-danger {
+  background: transparent;
+  border-color: #d99b93;
+  color: var(--c-danger);
+}
+.btn-outline-danger:hover {
+  background: var(--c-danger);
+  border-color: var(--c-danger);
+  color: #fff;
+}
+.btn-outline-success {
+  background: transparent;
+  border-color: #9db6a2;
+  color: var(--c-success);
+}
+.btn-outline-success:hover {
+  background: var(--c-success);
+  border-color: var(--c-success);
+  color: #fff;
+}
+.btn-outline-warning {
+  background: transparent;
+  border-color: #e0c078;
+  color: var(--c-warning);
+}
+.btn-outline-warning:hover {
+  background: #eab43a;
+  border-color: #eab43a;
+  color: #4a3606;
+}
+.btn-sm {
+  padding: .3rem .65rem;
+  min-height: 32px;
+  font-size: var(--fs-sm);
+  border-radius: 7px;
+}
+.btn-lg {
+  padding: .75rem 1.5rem;
+  min-height: 48px;
+  font-size: 1rem;
+}
+.touch {
+  min-height: 44px;
+  min-width: 44px;
+}
+.btn-check {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  pointer-events: none;
+}
+/* ---------------------------------------------------------------
+   5. FORM
+   --------------------------------------------------------------- */
+.form-control,.form-select {
+  display: block;
+  width: 100%;
+  padding: .55rem .85rem;
+  min-height: 44px;
+  color: var(--c-ink);
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  transition: border-color .15s ease,box-shadow .15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-select {
+  padding-right: 2.2rem;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23756d66' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .8rem center;
+  background-size: 1em 1em;
+}
+.form-control::placeholder {
+  color: #a29a92;
+  opacity: 1;
+}
+.form-control:focus,.form-select:focus {
+  outline: none;
+  border-color: #b89178;
+  box-shadow: 0 0 0 .2rem rgba(138,79,50,.10);
+}
+.form-control:disabled,.form-select:disabled {
+  background: var(--c-surface);
+  color: var(--c-muted);
+}
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+.form-control[type="file"] {
+  padding-top: .45rem;
+}
+.form-label,.compact-form label,.auth-modal-form label,.register-fields label,.profile-fields label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--c-muted);
+  letter-spacing: .03em;
+  margin-bottom: 6px;
+}
+.form-text,.form-help {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  margin-top: 6px;
+  display: block;
+}
+.input-group {
+  display: flex;
+  align-items: stretch;
+}
+.input-group>.form-control {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  min-width: 0;
+}
+.input-group>.form-control:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.input-group>.input-group-text {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  border-right: 0;
+}
+.input-group-text {
+  display: inline-flex;
+  align-items: center;
+  padding: .55rem .8rem;
+  min-height: 44px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  color: var(--c-muted);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+}
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 1.4em;
+}
+.form-check-input {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+  margin: 0;
+  accent-color: var(--c-accent);
+  border: 1px solid #cfc7bb;
+  border-radius: .3em;
+  background: #fff;
+  cursor: pointer;
+}
+.form-check-input[type="radio"] {
+  border-radius: 50%;
+}
+.form-check-label {
+  margin-bottom: 0;
+  cursor: pointer;
+}
+/* ---------------------------------------------------------------
+   6. TABEL
+   --------------------------------------------------------------- */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  color: var(--c-ink);
+  font-size: var(--fs-md);
+}
+.table th,.table td {
+  padding: .65rem .75rem;
+  border-bottom: 1px solid var(--c-line);
+  text-align: left;
+  vertical-align: middle;
+}
+.table thead th {
+  font-weight: 700;
+  color: var(--c-muted);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-line);
+}
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.align-middle {
+  vertical-align: middle;
+}
+/* ---------------------------------------------------------------
+   7. ALERT & BADGE
+   --------------------------------------------------------------- */
+.alert {
+  padding: .85rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-md);
+  margin-bottom: 1rem;
+}
+.alert-success {
+  background: var(--c-success-bg);
+  border-color: #c9dccd;
+  color: #3c5343;
+}
+.alert-danger {
+  background: var(--c-danger-bg);
+  border-color: #e5bdb5;
+  color: #7e2a21;
+}
+.alert-warning {
+  background: var(--c-warning-bg);
+  border-color: #e7d5a5;
+  color: #7a550c;
+}
+.alert-secondary {
+  background: var(--c-surface);
+  border-color: var(--c-line);
+  color: var(--c-muted);
+}
+.alert-light {
+  background: var(--c-paper);
+  border-color: var(--c-line);
+  color: var(--c-muted);
+}
+.badge {
+  display: inline-block;
+  padding: .35em .7em;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  line-height: 1.4;
+  border-radius: 999px;
+  background: var(--c-surface);
+  color: var(--c-ink);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.text-bg-success {
+  background: var(--c-success);
+  color: #fff;
+}
+.text-bg-danger {
+  background: var(--c-danger);
+  color: #fff;
+}
+.text-bg-warning {
+  background: #eab43a;
+  color: #4a3606;
+}
+/* ---------------------------------------------------------------
+   8. KARTU & GARIS
+   --------------------------------------------------------------- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+}
+.border {
+  border: 1px solid var(--c-line);
+}
+.border-0 {
+  border: 0;
+}
+.border-top {
+  border-top: 1px solid var(--c-line);
+}
+.rounded {
+  border-radius: var(--radius-sm);
+}
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+.shadow-none {
+  box-shadow: none;
+}
+.h-100 {
+  height: 100%;
+}
+/* ---------------------------------------------------------------
+   9. MODAL (vanilla — digerakkan oleh app.js)
+   --------------------------------------------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  outline: 0;
+}
+.modal.show {
+  display: block;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-backdrop);
+  background: rgba(23,19,15,.55);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+.modal-backdrop.show {
+  opacity: 1;
+}
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: .6rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 1.2rem);
+}
+.modal-content {
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--c-line);
+  box-shadow: 0 24px 70px rgba(30,24,20,.28);
+}
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+.modal.fade .modal-dialog {
+  transform: translateY(-24px);
+  opacity: 0;
+  transition: transform .22s ease,opacity .22s ease;
+}
+.modal.fade.show .modal-dialog {
+  transform: none;
+  opacity: 1;
+}
+@media(min-width:576px) {
+  .modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+  .modal-dialog.modal-lg {
+    max-width: 800px;
+  }
+  .modal-dialog-scrollable .modal-content {
+    max-height: calc(100% - 3.5rem);
+    overflow: hidden;
+  }
+  .modal-dialog-scrollable .modal-body {
+    overflow-y: auto;
+  }
+}
+body.modal-open {
+  overflow: hidden;
+}
+/* ---------------------------------------------------------------
+   10. COLLAPSE (vanilla)
+   --------------------------------------------------------------- */
+.collapse {
+  display: none;
+}
+.collapse.show {
+  display: block;
+}
+/* Elemen collapse yang merupakan baris tabel tetap dirender sebagai baris */
+tr.collapse.show {
+  display: table-row;
+}
+/* ---------------------------------------------------------------
+   11. UTILITAS (hanya yang benar-benar dipakai aplikasi)
+   --------------------------------------------------------------- */
+.d-flex {
+  display: flex;
+}
+.d-inline {
+  display: inline;
+}
+.d-block {
+  display: block;
+}
+.d-none {
+  display: none;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-column {
+  flex-direction: column;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.justify-content-end {
+  justify-content: flex-end;
+}
+.align-items-center {
+  align-items: center;
+}
+.align-items-end {
+  align-items: flex-end;
+}
+.align-self-start {
+  align-self: flex-start;
+}
+.gap-2 {
+  gap: var(--sp-2);
+}
+.gap-3 {
+  gap: var(--sp-3);
+}
+.m-0 {
+  margin: 0;
+}
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-1 {
+  margin-bottom: var(--sp-1);
+}
+.mb-2 {
+  margin-bottom: var(--sp-2);
+}
+.mb-3 {
+  margin-bottom: var(--sp-3);
+}
+.mb-4 {
+  margin-bottom: var(--sp-4);
+}
+.mt-1 {
+  margin-top: var(--sp-1);
+}
+.mt-2 {
+  margin-top: var(--sp-2);
+}
+.mt-3 {
+  margin-top: var(--sp-3);
+}
+.mt-4 {
+  margin-top: var(--sp-4);
+}
+.p-3 {
+  padding: var(--sp-3);
+}
+.p-4 {
+  padding: var(--sp-4);
+}
+.pt-2 {
+  padding-top: var(--sp-2);
+}
+.pt-3 {
+  padding-top: var(--sp-3);
+}
+.py-2 {
+  padding-top: var(--sp-2);
+  padding-bottom: var(--sp-2);
+}
+.py-4 {
+  padding-top: var(--sp-4);
+  padding-bottom: var(--sp-4);
+}
+.py-5 {
+  padding-top: var(--sp-5);
+  padding-bottom: var(--sp-5);
+}
+@media(min-width:992px) {
+  .py-lg-5 {
+    padding-top: var(--sp-5);
+    padding-bottom: var(--sp-5);
+  }
+}
+.w-100 {
+  width: 100%;
+}
+.text-center {
+  text-align: center;
+}
+.text-end {
+  text-align: right;
+}
+.text-start {
+  text-align: left;
+}
+.text-muted,.text-secondary {
+  color: var(--c-muted);
+}
+.text-warning {
+  color: var(--c-warning);
+}
+.text-success {
+  color: var(--c-success);
+}
+.text-muted-custom {
+  color: var(--c-muted);
+}
+.h4 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -.015em;
+}

@@ -1,0 +1,712 @@
+/* =========================================================================
+   REVISION LAYER — Warung Maem Jadoel
+   Lapisan final untuk:
+   1. Menyeragamkan font & menghapus garis bawah teks.
+   2. Memusatkan navbar Homepage & pelanggan.
+   3. Keranjang pelanggan menjadi pop-up dari tombol keranjang di header.
+   4. Form CRUD admin tampil sebagai pop-up dengan tombol silang (X).
+   5. Merapikan jarak antar elemen agar tidak berdempetan.
+
+   File ini dimuat paling akhir setelah foundation.css, app.css, dan
+   ecommerce.css sehingga aman menimpa gaya lama tanpa mengubah kode inti.
+   ========================================================================= */
+/* -------------------------------------------------------------------------
+   1. TIPOGRAFI SELARAS & TANPA GARIS BAWAH
+   ------------------------------------------------------------------------- */
+body,
+button,
+input,
+select,
+textarea,
+.btn,
+.form-control,
+.form-select,
+.table,
+.badge,
+.alert,
+.admin-nav-item,
+.ec-nav-link,
+.ec-btn,
+.ops-primary-btn,
+.ops-ghost-btn,
+.ops-delete-btn {
+  font-family: var(--font-sans) !important;
+}
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6,
+.page-title,
+.section-title,
+.ec-menu-title,
+.ec-page-head h1,
+.customer-simple-shell h1,
+.profile-heading-row h1,
+.points-card > strong,
+.admin-brand-link strong,
+.admin-modal-head h2 {
+  font-family: var(--font-display) !important;
+}
+a,
+a:hover,
+a:focus,
+a:active,
+.link-button,
+.btn-link,
+.ec-voucher-chip button {
+  text-decoration: none !important;
+}
+/* -------------------------------------------------------------------------
+   2. NAVBAR HOME & PELANGGAN DI TENGAH
+   ------------------------------------------------------------------------- */
+html body .ec-header-inner {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 20px;
+}
+html body .ec-header-inner > .ec-brand {
+  justify-self: start;
+  min-width: 0;
+}
+html body .ec-header-inner > .ec-nav {
+  justify-self: center;
+  margin-left: 0 !important;
+}
+html body .ec-header-inner > .ec-header-actions {
+  justify-self: end;
+}
+html body .ec-header-actions {
+  gap: 10px;
+}
+@media (max-width: 980px) {
+  html body .ec-header-inner {
+    display: flex !important;
+    column-gap: 0;
+  }
+}
+/* -------------------------------------------------------------------------
+   3. KERANJANG PELANGGAN SEBAGAI POP-UP
+   ------------------------------------------------------------------------- */
+.cart-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1290;
+  background: rgba(25, 18, 12, .38);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+.cart-panel-backdrop.show {
+  opacity: 1;
+}
+html body.customer-layout-body .customer-cart-panel {
+  position: fixed !important;
+  top: 92px !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  left: auto !important;
+  z-index: 1300 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(400px, calc(100vw - 48px)) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 22px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--c-line) !important;
+  border-radius: 24px !important;
+  background: #fff !important;
+  box-shadow: 0 30px 90px rgba(30, 20, 12, .28) !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(18px);
+  transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+}
+html body.customer-layout-body .customer-cart-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-head {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 0 14px !important;
+  padding: 0 0 14px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--c-line) !important;
+  background: transparent !important;
+  text-align: left !important;
+  cursor: default !important;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-head h2 {
+  margin: 0 !important;
+  font-family: var(--font-display) !important;
+  font-size: 1.3rem !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
+}
+html body.customer-layout-body .customer-cart-panel #cartBadge {
+  flex: 0 0 auto;
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  background: #fff2bd !important;
+  color: #8a6500 !important;
+  font-size: .68rem !important;
+  font-weight: 800 !important;
+  white-space: nowrap;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-close {
+  display: grid !important;
+  flex: 0 0 36px !important;
+  place-items: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  margin-left: auto !important;
+  padding: 0 !important;
+  border: 1px solid var(--c-line) !important;
+  border-radius: 50% !important;
+  background: #f7f4ef !important;
+  color: var(--c-ink) !important;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-close:hover {
+  border-color: var(--c-accent) !important;
+  background: #fff !important;
+  color: var(--c-accent) !important;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-close .ico {
+  width: 18px;
+  height: 18px;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-items {
+  display: block !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 4px 4px 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+html body.customer-layout-body .customer-cart-panel .cart-empty-state {
+  display: grid;
+  min-height: 190px;
+  height: auto;
+  padding: 24px 10px;
+  place-items: center;
+  color: var(--c-muted);
+  font-size: .84rem;
+  text-align: center;
+}
+html body.customer-layout-body .customer-cart-panel .cart-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 0 !important;
+  border-bottom: 1px solid var(--c-line);
+}
+html body.customer-layout-body .customer-cart-panel .cart-item:last-child {
+  border-bottom: 0;
+}
+html body.customer-layout-body .customer-cart-panel .cart-item strong {
+  display: block;
+  font-size: .86rem;
+  line-height: 1.35;
+}
+html body.customer-layout-body .customer-cart-panel .cart-item small {
+  display: block;
+  margin-top: 3px;
+  color: var(--c-muted);
+  font-size: .7rem;
+  line-height: 1.45;
+}
+html body.customer-layout-body .customer-cart-panel .cart-item-right {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+html body.customer-layout-body .customer-cart-panel .cart-item-right b {
+  font-size: .82rem;
+  white-space: nowrap;
+}
+html body.customer-layout-body .customer-cart-panel .cart-item-right button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--c-line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--c-muted);
+  cursor: pointer;
+}
+html body.customer-layout-body .customer-cart-panel .cart-item-right button:hover {
+  border-color: var(--c-danger);
+  color: var(--c-danger);
+}
+html body.customer-layout-body .customer-cart-panel .ec-qty {
+  margin-top: 9px !important;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-total {
+  display: block !important;
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 12px 0 0 !important;
+  padding: 14px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--c-line) !important;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-total > div {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  color: var(--c-muted);
+  font-size: .8rem;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-total > div strong {
+  color: var(--c-ink);
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-total .cart-total-line {
+  margin: 6px 0 0 !important;
+  padding-top: 10px;
+  border-top: 1px dashed var(--c-line);
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-total .cart-total-line span {
+  color: var(--c-ink);
+  font-weight: 700;
+}
+html body.customer-layout-body .customer-cart-panel .cart-panel-total .cart-total-line strong {
+  font-size: 1.1rem;
+}
+html body.customer-layout-body .customer-cart-panel .customer-checkout-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 46px !important;
+  margin: 12px 0 0 !important;
+  padding: 0 18px !important;
+  border-radius: 12px !important;
+  font-size: .82rem !important;
+  font-weight: 800 !important;
+}
+html body.customer-layout-body .customer-cart-panel .ec-cart-note {
+  margin-top: 9px;
+  color: var(--c-muted);
+  font-size: .66rem;
+  text-align: center;
+}
+/* Menu tetap selebar penuh; panel keranjang tampil sebagai pop-up di atasnya. */
+html body.customer-layout-body .ec-menu-layout {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+html body.customer-layout-body.cart-open {
+  overflow: hidden;
+}
+@media (max-width: 820px) {
+  .cart-panel-backdrop {
+    bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+  html body.customer-layout-body .customer-cart-panel {
+    top: auto !important;
+    right: 12px !important;
+    bottom: calc(74px + env(safe-area-inset-bottom)) !important;
+    left: 12px !important;
+    width: auto !important;
+    max-height: calc(100dvh - 168px) !important;
+    padding: 16px 16px 14px !important;
+    border-radius: 20px !important;
+    transform: translateY(16px);
+  }
+  html body.customer-layout-body .customer-cart-panel.is-open {
+    transform: none;
+  }
+  html body.customer-layout-body .customer-cart-panel .cart-panel-head {
+    margin-bottom: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  html body.customer-layout-body .customer-cart-panel .cart-panel-head h2 {
+    font-size: 1.1rem !important;
+  }
+  html body.customer-layout-body .customer-cart-panel .cart-panel-total > div {
+    display: flex !important;
+  }
+  html body.customer-layout-body .customer-cart-panel .customer-checkout-btn {
+    height: 44px !important;
+  }
+}
+/* -------------------------------------------------------------------------
+   4. POP-UP FORM CRUD ADMIN
+   ------------------------------------------------------------------------- */
+.admin-crud-modal .modal-dialog {
+  max-width: 820px;
+  margin: 1rem auto;
+}
+.admin-crud-modal .modal-dialog.modal-xl {
+  max-width: 1040px;
+}
+.admin-crud-modal .modal-dialog-scrollable .modal-content {
+  max-height: calc(100dvh - 2rem);
+}
+.admin-crud-modal .modal-content {
+  overflow: hidden;
+  border: 0;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 28px 80px rgba(30, 22, 14, .26);
+}
+.admin-modal-head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 24px 18px;
+  border-bottom: 1px solid var(--c-line);
+  background: #fff;
+}
+.admin-modal-head h2 {
+  margin: 3px 0 0;
+  font-size: 1.28rem;
+  letter-spacing: -.02em;
+}
+.admin-modal-kicker {
+  display: block;
+  color: var(--c-muted);
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.admin-modal-close {
+  display: grid;
+  flex: 0 0 38px;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--c-line);
+  border-radius: 50%;
+  background: #f7f4ef;
+  color: var(--c-ink);
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.admin-modal-close:hover {
+  border-color: var(--c-accent);
+  background: #fff;
+  color: var(--c-accent);
+}
+.admin-modal-close .ico {
+  width: 19px;
+  height: 19px;
+}
+.admin-modal-close--float {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+}
+.admin-crud-modal .modal-body {
+  padding: 22px 24px 26px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#productModal .modal-content,
+#bonusModal .modal-content {
+  position: relative;
+}
+#productModal .panel-header,
+#bonusModal .panel-header,
+#voucherModal .panel-header {
+  padding-right: 62px;
+}
+.admin-crud-modal .form-actions {
+  position: sticky;
+  bottom: -26px;
+  z-index: 4;
+  margin: 18px -24px -26px;
+  padding: 14px 24px 24px;
+  border-top: 1px solid var(--c-line);
+  background: rgba(255, 255, 255, .97);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.admin-crud-modal .row {
+  --bs-gutter-y: 1rem;
+}
+.admin-crud-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0 0 16px;
+}
+.admin-single-grid {
+  grid-template-columns: 1fr !important;
+}
+@media (max-width: 767px) {
+  .admin-crud-modal .modal-dialog {
+    margin: .5rem auto;
+    max-width: calc(100vw - 16px);
+  }
+  .admin-crud-modal .modal-dialog-scrollable .modal-content {
+    max-height: calc(100dvh - 1rem);
+  }
+  .admin-modal-head {
+    padding: 16px 18px;
+  }
+  .admin-modal-head h2 {
+    font-size: 1.12rem;
+  }
+  .admin-crud-modal .modal-body {
+    padding: 18px;
+  }
+  .admin-crud-modal .form-actions {
+    bottom: -18px;
+    margin: 16px -18px -18px;
+    padding: 12px 18px 18px;
+  }
+  #productModal .panel-header,
+    #bonusModal .panel-header,
+    #voucherModal .panel-header {
+    padding-right: 56px;
+  }
+}
+/* -------------------------------------------------------------------------
+   5. RAPATKAN JARAK & CEGAH ELEMEN BERDEMPETAN
+   ------------------------------------------------------------------------- */
+.admin-content .page-heading {
+  margin-bottom: 22px;
+}
+.admin-content .panel-header {
+  gap: 18px;
+}
+.admin-content .panel-header > div {
+  min-width: 0;
+}
+.admin-product-actions,
+.master-actions,
+.ops-table-actions,
+.form-actions,
+.ec-header-actions,
+.ec-address-actions,
+.ec-order-actions {
+  gap: 9px;
+  flex-wrap: wrap;
+}
+.admin-product-actions form,
+.master-actions form,
+.ops-table-actions form,
+.form-actions form {
+  margin: 0;
+}
+.admin-table th,
+.admin-table td {
+  padding: 12px 14px;
+}
+.admin-table td .btn,
+.admin-table td .ops-ghost-btn,
+.admin-table td .ops-delete-btn {
+  margin: 2px 3px 2px 0;
+}
+.panel-header .btn,
+.panel-header .ops-ghost-btn {
+  flex: 0 0 auto;
+}
+.admin-form .form-label,
+.admin-crud-modal .form-label {
+  margin-bottom: 6px;
+}
+.admin-crud-modal .form-help,
+.admin-crud-modal .text-muted-custom {
+  margin-top: 5px;
+  line-height: 1.5;
+}
+.ec-menu-toolbar {
+  margin-bottom: 20px;
+}
+.ec-product-desc {
+  margin-bottom: 12px;
+}
+.customer-product-bottom {
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .admin-table th,
+    .admin-table td {
+    padding: 11px 12px;
+  }
+}
+/* -------------------------------------------------------------------------
+   6. PENYEMPURNAAN FORM POP-UP & VOUCHER
+   ------------------------------------------------------------------------- */
+.voucher-cta {
+  padding: 22px 24px 26px;
+}
+.voucher-cta .btn {
+  min-height: 44px;
+  padding: 0 20px;
+  font-weight: 700;
+}
+.admin-crud-toggle {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--c-line);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--c-ink);
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.admin-crud-toggle:hover {
+  border-color: var(--c-accent);
+  background: #fffaf4;
+  color: var(--c-accent);
+}
+.admin-crud-toggle .ico {
+  width: 17px;
+  height: 17px;
+}
+.admin-modal-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--c-muted);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.admin-crud-modal .modal-body > form {
+  margin: 0;
+}
+.admin-crud-modal .modal-body .form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.admin-crud-modal .modal-body .form-actions .btn {
+  min-height: 44px;
+}
+/* Form yang dipindahkan ke modal tetap rapi di layar kecil */
+@media (max-width: 767px) {
+  .voucher-cta {
+    padding: 18px;
+  }
+  .admin-crud-modal .modal-body > form.row {
+    --bs-gutter-x: 1rem;
+    --bs-gutter-y: 1rem;
+  }
+  .admin-crud-modal .modal-body .form-actions {
+    flex-wrap: wrap;
+  }
+  .admin-crud-modal .modal-body .form-actions .btn {
+    flex: 1 1 160px;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   5. NAVIGASI LANDING & ANCHOR OFFSET
+   ------------------------------------------------------------------------- */
+html {
+  scroll-padding-top: 96px;
+}
+.landing-section[id],
+.landing-hero[id],
+#products {
+  scroll-margin-top: 96px;
+}
+.public-home-nav .ec-nav-link.active,
+.public-home-nav .ec-nav-link.is-active,
+.customer-layout-body .ec-nav .ec-nav-link.active {
+  background: #fff;
+  color: var(--c-ink);
+  box-shadow: 0 2px 8px rgba(55, 38, 25, .07);
+}
+
+/* -------------------------------------------------------------------------
+   6. KARTU VOUCHER DI LANDING PAGE
+   ------------------------------------------------------------------------- */
+.landing-voucher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 6px 0 26px;
+}
+.landing-voucher-card {
+  position: relative;
+  padding: 22px 22px 20px;
+  border: 1px dashed rgba(83, 54, 31, .35);
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fffaf0, #fff);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.landing-voucher-type {
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: #8a5a2b;
+}
+.landing-voucher-card strong {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.5rem;
+  letter-spacing: .04em;
+}
+.landing-voucher-card p {
+  margin: 0;
+  font-size: .85rem;
+  color: var(--c-muted, #6f6257);
+}
+.landing-voucher-card small {
+  font-size: .72rem;
+  color: #8a5a2b;
+  font-weight: 600;
+}
+.landing-voucher-empty {
+  padding: 20px 24px;
+  margin-bottom: 22px;
+  border: 1px dashed var(--c-line, #e6ded3);
+  border-radius: 16px;
+  background: #fffaf0;
+  color: var(--c-muted, #6f6257);
+  text-align: center;
+  font-size: .9rem;
+}
+
+/* Modal CRUD: selalu di tengah layar dan tidak melewati tinggi viewport. */
+.admin-crud-modal .modal-dialog-centered {
+  min-height: calc(100dvh - 2rem);
+  margin: .6rem auto;
+}
+.admin-crud-modal .modal-dialog-centered .modal-content {
+  max-height: calc(100dvh - 2rem);
+}
+@media (max-width: 767px) {
+  .landing-voucher-grid {
+    grid-template-columns: 1fr;
+  }
+}
