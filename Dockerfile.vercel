@@ -1,0 +1,34 @@
+
+# Vercel Container deployment for Warung Maem Jadoel
+FROM dunglas/frankenphp:1-php8.4-alpine AS base
+
+WORKDIR /app
+
+# PHP extensions
+RUN install-php-extensions pdo_mysql curl gd redis \
+    && cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+# Install Composer dependencies
+FROM base AS dependencies
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN apk add --no-cache unzip
+
+COPY composer.json ./
+
+RUN if [ -f composer.lock ]; then \
+        composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader; \
+    else \
+        composer update --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader; \
+    fi
+
+# Production runtime
+FROM base AS runtime
+
+COPY --from=dependencies /app/vendor ./vendor
+COPY . .
+COPY Caddyfile /etc/caddy/Caddyfile
+
+ENV PORT=80
+
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
