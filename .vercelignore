@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+.git
+.git/**
+node_modules
+vendor
+*.zip
+Revisi Tampilan

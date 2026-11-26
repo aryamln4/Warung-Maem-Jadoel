@@ -237,3 +237,19 @@ Migrasi VE29 diperbaiki agar aman untuk database yang kolom `nomor_pesanan`-nya 
 ## Integrasi Midtrans QRIS Sandbox
 
 Untuk setup payment gateway QRIS, baca `docs/MIDTRANS_SANDBOX.md`. Gunakan `MIDTRANS_MODE=sandbox` dan isi `MIDTRANS_SERVER_KEY` di `.env` lokal. Jangan membagikan file `.env`. Jika memakai database lama, jalankan migration `database/migration_midtrans_qris.sql` setelah backup. URL webhook wajib dapat diakses dari internet melalui HTTPS.
+
+
+## Deploy ke Vercel (PHP Native)
+
+Project ini bukan aplikasi Node.js; konfigurasi Vercel menggunakan runtime PHP komunitas `vercel-php`. File konfigurasi dan entrypoint sudah disediakan: `vercel.json` dan `api/index.php`.
+
+**Langkah deploy:**
+1. Push folder project (tanpa `.env`) ke repository GitHub.
+2. Import repository di Vercel, Framework Preset pilih **Other**, Root Directory gunakan root project.
+3. Tambahkan Environment Variables di Vercel (Production dan Preview sesuai kebutuhan): `APP_ENV=production`, `APP_URL=https://domain-deployment-anda`, `APP_TIMEZONE=Asia/Jakarta`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_ENCRYPTION`, `MAIL_FROM`, `MAIL_FROM_NAME`, `PAYMENT_PROVIDER`, `MIDTRANS_MODE`, `MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`.
+4. Gunakan database MySQL/MariaDB yang dapat diakses dari internet oleh server Vercel (bukan `127.0.0.1`/database XAMPP lokal). Import `database/database.sql` pada database hosting.
+5. Deploy. Routing Vercel meneruskan `/` dan endpoint `?r=...` ke PHP front controller; aset `/assets/...` diarahkan ke `public/assets`.
+
+**Batasan hosting serverless:** file gambar yang diupload aplikasi disimpan ke folder project dan filesystem serverless Vercel tidak permanen. Upload foto menu/QRIS tidak akan terjamin tersimpan setelah deployment baru atau cold instance. Untuk produksi, pindahkan upload ke object storage (misalnya Vercel Blob atau Cloudinary) dan ubah helper upload agar menyimpan di sana. Database dan email juga perlu layanan eksternal.
+
+Jangan commit `.env`; file itu sudah dikecualikan oleh `.gitignore` dan `.vercelignore`. Jika kunci Midtrans dalam file `.env` yang pernah dibagikan adalah kunci aktif, segera rotate/regenerate di dashboard Midtrans.
