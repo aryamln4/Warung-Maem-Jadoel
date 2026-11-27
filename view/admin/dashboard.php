@@ -65,7 +65,7 @@ $width=$maxTopQty>0?round(($qty/$maxTopQty)*100):0;
      }
    }catch(e){}
  }
- pollOrders(); setInterval(pollOrders,2000);
+ pollOrders(); setInterval(function(){ if(!document.hidden) pollOrders(); },10000);
 })();
 </script>
 <?php require BASE_PATH.'/view/partials/footer.php';

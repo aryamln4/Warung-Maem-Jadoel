@@ -679,7 +679,7 @@ body {
   }
 }
 /* =========================================================
-   Maem Jadoel UI 2.0 â€” separated public / customer / admin
+   Maem Jadoel UI 2.0 — separated public / customer / admin
    ========================================================= */
 body {
   font-family: "Inter",system-ui,sans-serif;
@@ -1360,7 +1360,7 @@ body {
   }
 }
 /* =========================================================
-   MAEM JADOEL â€” FINAL HEADER SYSTEM
+   MAEM JADOEL — FINAL HEADER SYSTEM
    One source of truth for public, customer and admin headers.
    ========================================================= */
 .public-header-inner,
@@ -1455,7 +1455,7 @@ body {
   }
 }
 /* =========================================================
-   POLISH PASS â€” consistent typography, spacing and admin forms
+   POLISH PASS — consistent typography, spacing and admin forms
    ========================================================= */
 html {
   scroll-behavior: smooth;
@@ -1896,7 +1896,7 @@ body label,body input,body select,body textarea,body button,body .btn,body table
   }
 }
 /* =========================================================
-   FINAL DEVELOPMENT PASS â€” form controls, picker & responsive polish
+   FINAL DEVELOPMENT PASS — form controls, picker & responsive polish
    ========================================================= */
 .required-mark {
   color: #a64b35;
@@ -2212,7 +2212,7 @@ body label,body input,body select,body textarea,body button,body .btn,body table
     grid-template-columns: 1fr;
   }
 }
-/* CUSTOMER MENU â€” inspired by the supplied reference, adapted to Warung Maem Jadoel */
+/* CUSTOMER MENU — inspired by the supplied reference, adapted to Warung Maem Jadoel */
 .customer-header {
   background: #fff;
   border-bottom: 1px solid #e9e4dd;
@@ -3435,7 +3435,7 @@ body.modal-open {
     font-size: 1.65rem;
   }
 }
-/* CUSTOMER UI FINAL POLISH â€” menu flow, header search, mobile cart */
+/* CUSTOMER UI FINAL POLISH — menu flow, header search, mobile cart */
 .customer-profile-link {
   min-width: 0;
 }
@@ -3817,7 +3817,7 @@ body.modal-open {
 .order-preview small {
   color: #766f68;
 }
-/* ADMIN ORDER DETAIL VISUAL POLISH â€” preserves the working server-rendered detail */
+/* ADMIN ORDER DETAIL VISUAL POLISH — preserves the working server-rendered detail */
 .admin-order-actions-cell {
   min-width: 245px;
   vertical-align: top!important;
@@ -4045,7 +4045,7 @@ body.modal-open {
     padding: 12px 11px;
   }
 }
-/* INVENTORY â€” compact product stock editor */
+/* INVENTORY — compact product stock editor */
 .inventory-page {
   padding-top: 32px;
 }
@@ -4225,7 +4225,7 @@ body.modal-open {
   }
 }
 /* ================================================================
-   WARUNG MAEM JADOEL â€” UNIFIED iOS / GLASSMORPHISM DESIGN SYSTEM
+   WARUNG MAEM JADOEL — UNIFIED iOS / GLASSMORPHISM DESIGN SYSTEM
    v13: one font + #EDAE49 / white identity + soft glass surfaces
    ================================================================ */
 :root {
@@ -4501,7 +4501,7 @@ body {
   }
 }
 /* =========================================================
-   WMJ FINAL VISUAL SYSTEM â€” iOS / GLASS / INTER
+   WMJ FINAL VISUAL SYSTEM — iOS / GLASS / INTER
    Baseline: actual user-uploaded project
    ========================================================= */
 :root {
@@ -4798,7 +4798,7 @@ button,input,select,textarea {
   }
 }
 /* =========================================================
-   WMJ OPERATIONS REBUILD â€” deliberately replaces the old
+   WMJ OPERATIONS REBUILD — deliberately replaces the old
    inventory/table visual language. One tab = one server-rendered view.
    ========================================================= */
 .ops-redesign {
@@ -5357,7 +5357,7 @@ button,input,select,textarea {
   }
 }
 /* =========================================================
-   WMJ ADMIN SHELL REBUILD â€” stronger visual hierarchy
+   WMJ ADMIN SHELL REBUILD — stronger visual hierarchy
    ========================================================= */
 .admin-layout {
   min-height: 100vh !important;
@@ -5501,7 +5501,7 @@ button,input,select,textarea {
   }
 }
 /* =========================================================
-   ACCESSIBILITY / CONTRAST PASS â€” v16
+   ACCESSIBILITY / CONTRAST PASS — v16
    Keep the glass/iOS visual language, but never sacrifice text clarity.
    ========================================================= */
 :root {
@@ -5828,7 +5828,7 @@ small,.small {
 [style*="color: #999"],[style*="color: #aaa"],[style*="color: #bbb"],[style*="color: #ccc"] {
   color: #596067!important;
 }
-/* Unified login â€” warm editorial panel over the supplied restaurant photograph */
+/* Unified login — warm editorial panel over the supplied restaurant photograph */
 body:has(.combined-login-page) .auth-header {
   display: none!important;
 }
@@ -6878,7 +6878,7 @@ body:has(.combined-login-page) .login-panel .login-back {
   }
 }
 /* =========================================================
-   VE10 â€” LANDING + CUSTOMER REDESIGN
+   VE10 — LANDING + CUSTOMER REDESIGN
    Reference-driven visual layer. Server logic and existing
    order/review flows remain unchanged.
    ========================================================= */
@@ -7480,7 +7480,7 @@ body.public-layout-body,body.customer-layout-body {
   font-size: .7rem;
   color: #9f9388;
 }
-/* Customer pages â€” match the supplied desktop/mobile concept while preserving server-rendered data. */
+/* Customer pages — match the supplied desktop/mobile concept while preserving server-rendered data. */
 .customer-layout-body .customer-header {
   height: 74px;
   background: rgba(255,253,249,.96)!important;
@@ -8232,7 +8232,7 @@ body.public-layout-body,body.customer-layout-body {
   }
 }
 /* ================================================================
-   VE11 â€” CLEAN REBUILD FROM THE SUPPLIED DESIGN REFERENCES
+   VE11 — CLEAN REBUILD FROM THE SUPPLIED DESIGN REFERENCES
    Landing + customer pages intentionally use solid surfaces,
    explicit contrast, restrained shadows and fixed content widths.
    ================================================================ */
@@ -9925,7 +9925,7 @@ body.public-layout-body,body.customer-layout-body {
     display: flex!important;
   }
 }
-/* VE12 â€” Lupa Sandi menyatu dengan Landing Page */
+/* VE12 — Lupa Sandi menyatu dengan Landing Page */
 .public-layout-body .auth-modal-forgot {
   justify-self: end;
   border: 0;
@@ -9959,7 +9959,7 @@ body.public-layout-body,body.customer-layout-body {
   font-size: .82rem;
   line-height: 1.55;
 }
-/* VE13 â€” Lupa Sandi mengikuti referensi LupaSandi.png */
+/* VE13 — Lupa Sandi mengikuti referensi LupaSandi.png */
 .public-layout-body .auth-forgot-modal {
   z-index: 1080;
 }
@@ -10186,7 +10186,7 @@ body.public-layout-body,body.customer-layout-body {
     margin-bottom: 23px;
   }
 }
-/* VE14 â€” Header, 3 hero slides, footer contrast */
+/* VE14 — Header, 3 hero slides, footer contrast */
 .public-layout-body .public-header-inner {
   grid-template-columns: 250px minmax(360px,1fr) 210px!important;
 }
@@ -10497,7 +10497,7 @@ body.public-layout-body,body.customer-layout-body {
     padding-right: 25px!important;
   }
 }
-/* VE15 â€” public auth modal refinements based on supplied Login/Regis references */
+/* VE15 — public auth modal refinements based on supplied Login/Regis references */
 .public-layout-body .public-nav {
   gap: 8px;
   flex: 1;
@@ -10811,7 +10811,7 @@ body.public-layout-body,body.customer-layout-body {
     grid-column: auto;
   }
 }
-/* VE17 â€” Hero 16:9 + 5-second slide progress indicator */
+/* VE17 — Hero 16:9 + 5-second slide progress indicator */
 .public-layout-body .landing-hero-inner {
   width: min(1050px,calc(100% - 36px))!important;
   height: auto!important;
@@ -10930,7 +10930,7 @@ body.public-layout-body,body.customer-layout-body {
     height: 3px!important;
   }
 }
-/* VE19 â€” review carousel behavior only; keep VE17 card design unchanged */
+/* VE19 — review carousel behavior only; keep VE17 card design unchanged */
 .public-layout-body .landing-review-carousel {
   position: relative;
   width: 100%;
@@ -10962,7 +10962,7 @@ body.public-layout-body,body.customer-layout-body {
     flex-basis: 100%;
   }
 }
-/* VE20 â€” Customer banner uses Landing Banner 2 + 3 */
+/* VE20 — Customer banner uses Landing Banner 2 + 3 */
 .customer-layout-body .customer-banner-slider {
   position: relative!important;
   height: 360px!important;
@@ -11067,7 +11067,7 @@ body.public-layout-body,body.customer-layout-body {
     bottom: 11px;
   }
 }
-/* VE21 â€” customer header keeps navigation at the right when search is unavailable */
+/* VE21 — customer header keeps navigation at the right when search is unavailable */
 .customer-layout-body .customer-header-inner.no-customer-search {
   grid-template-columns: 190px minmax(0,1fr) auto !important;
 }
@@ -11088,7 +11088,7 @@ body.public-layout-body,body.customer-layout-body {
     display: none !important;
   }
 }
-/* VE24 â€” Riwayat, detail transaksi, dan ulasan popup */
+/* VE24 — Riwayat, detail transaksi, dan ulasan popup */
 .customer-layout-body .history-v10-main {
   min-width: 0;
   flex: 1;
@@ -11421,7 +11421,7 @@ body.public-layout-body,body.customer-layout-body {
     font-size: 29px;
   }
 }
-/* VE26 â€” detail menu landing sebelum login */
+/* VE26 — detail menu landing sebelum login */
 .public-layout-body .landing-menu-info>p {
   font-size: .72rem;
   line-height: 1.55;
@@ -11776,7 +11776,7 @@ body.public-layout-body,body.customer-layout-body {
 .bonus-history-qty strong {
   color: #9c5c08;
 }
-/* VE31 â€” Rapikan layout Profil agar lebih seimbang dan tidak menyisakan ruang kosong */
+/* VE31 — Rapikan layout Profil agar lebih seimbang dan tidak menyisakan ruang kosong */
 .customer-layout-body .profile-v10-grid {
   grid-template-columns: minmax(0,1fr) minmax(0,1fr)!important;
   gap: 20px!important;
@@ -11818,7 +11818,7 @@ body.public-layout-body,body.customer-layout-body {
     gap: 16px!important;
   }
 }
-/* VE32 â€” Keep customer menu banners fully visible without cropping */
+/* VE32 — Keep customer menu banners fully visible without cropping */
 .customer-layout-body .customer-banner-slider {
   width: 100%!important;
   height: auto!important;
@@ -11854,7 +11854,7 @@ body.public-layout-body,body.customer-layout-body {
     aspect-ratio: 1233 / 694!important;
   }
 }
-/* VE33: konsistensi tombol form â€” label rata tengah, tanpa ikon panah dekoratif */
+/* VE33: konsistensi tombol form — label rata tengah, tanpa ikon panah dekoratif */
 .login-submit,
 .auth-modal-submit,
 .forgot-modal-submit,
@@ -11888,7 +11888,7 @@ form button[type="submit"],
 form input[type="submit"] {
   white-space: normal;
 }
-/* VE34 FIX â€” paksa seluruh lapisan slider dan gambar memenuhi area banner */
+/* VE34 FIX — paksa seluruh lapisan slider dan gambar memenuhi area banner */
 html body.customer-layout-body .customer-order-page .customer-menu-main .customer-banner-slider {
   position: relative!important;
   display: block!important;
@@ -11940,7 +11940,7 @@ html body.customer-layout-body .customer-order-page .customer-menu-main .custome
     min-height: 0!important;
   }
 }
-/* VE35 â€” keranjang mobile: panel ringkas di bawah, bisa dibuka tanpa merusak layout */
+/* VE35 — keranjang mobile: panel ringkas di bawah, bisa dibuka tanpa merusak layout */
 @media (max-width: 820px) {
   html body.customer-layout-body .customer-order-page {
     padding-bottom: 100px !important;
@@ -12108,7 +12108,7 @@ html body.customer-layout-body .customer-order-page .customer-menu-main .custome
     font-size: 10px !important;
   }
 }
-/* VE36 â€” teks banner pelanggan dibuat sebagai HTML agar mudah diedit */
+/* VE36 — teks banner pelanggan dibuat sebagai HTML agar mudah diedit */
 html body.customer-layout-body .customer-order-page .customer-menu-main .customer-banner-slider .customer-banner-slide {
   isolation: isolate!important;
 }
@@ -12374,11 +12374,11 @@ html body.customer-layout-body .customer-order-page .customer-menu-main .custome
   }
 }
 /* =========================================================================
-   LAPISAN AKHIR â€” HARMONISASI TIPOGRAFI & TOKEN
+   LAPISAN AKHIR — HARMONISASI TIPOGRAFI & TOKEN
    Layer ini selalu paling akhir sehingga menang atas semua deklarasi font
    yang campur aduk di atas. Satu pasangan font untuk seluruh aplikasi:
    - --font-sans  : teks, form, tombol, tabel, UI
-   - --font-display: judul (h1â€“h6), dengan tracking rapat
+   - --font-display: judul (h1–h6), dengan tracking rapat
    ========================================================================= */
 :root {
   --font-sans: "Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -12451,7 +12451,7 @@ button .ico,.btn .ico,.nav-button .ico,.landing-btn .ico {
   width: 18px;
   height: 18px;
 }
-/* FAQ landing: simbol + berputar menjadi Ã— saat terbuka */
+/* FAQ landing: simbol + berputar menjadi × saat terbuka */
 .landing-faq-list summary .ico {
   width: 16px;
   height: 16px;
@@ -12498,7 +12498,7 @@ button .ico,.btn .ico,.nav-button .ico,.landing-btn .ico {
   vertical-align: -.2em;
 }
 /* =========================================================================
-   PENYERAGAMAN FONT DISPLAY â€” menimpa semua deklarasi Georgia/serif lama
+   PENYERAGAMAN FONT DISPLAY — menimpa semua deklarasi Georgia/serif lama
    dengan selektor yang persis sama (lapisan ini paling akhir, jadi menang).
    Semua judul memakai --font-display; kutipan/teks isi kembali ke --font-sans.
    ========================================================================= */
@@ -12586,7 +12586,7 @@ html.wmj-motion [data-reveal].is-inview:hover {
                transform .3s cubic-bezier(.22,.61,.36,1),
                box-shadow .3s ease;
 }
-/* ---- 2) Hero tampil naik halus â€” re-animate setiap slide aktif --------- */
+/* ---- 2) Hero tampil naik halus — re-animate setiap slide aktif --------- */
 @keyframes wmj-rise {
   from {
     opacity: 0;

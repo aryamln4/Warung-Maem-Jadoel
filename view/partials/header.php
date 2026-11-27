@@ -139,7 +139,7 @@ $navActive = static function (string $prefix) use ($route): bool {
               wrap.hidden=vals.every(v=>v===0);
             } catch(e){}
           }
-          refreshOrderLights(); setInterval(refreshOrderLights,3000);
+          refreshOrderLights(); setInterval(function(){ if(!document.hidden) refreshOrderLights(); },15000);
         })();
         </script>
 

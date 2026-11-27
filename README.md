@@ -1,21 +1,21 @@
-# Warung Maem Jadoel â€” ERP UMKM PHP Native
+# Warung Maem Jadoel — ERP UMKM PHP Native
 
 ## 1. Ringkasan sistem
 Warung Maem Jadoel adalah aplikasi ERP/self-order UMKM berbasis PHP Native + MySQL untuk mengelola katalog, pesanan, pelanggan, voucher, stok, meja, dan keuangan.
 
 Aplikasi dibagi menjadi empat pengalaman utama:
 
-1. **Website publik** â€” landing page, promo, menu, FAQ, lokasi, login/daftar.
-2. **Pelanggan** â€” login, pilih menu, keranjang, checkout, pilih Dine-in/Takeaway, pilih meja saat checkout, pembayaran, riwayat, profil, dan voucher.
-3. **Admin** â€” dashboard operasional, Produk & Stok, Operasional, meja, pelanggan, keuangan.
-4. **Database MySQL** â€” seluruh data transaksi dan master menggunakan PDO prepared statement.
+1. **Website publik** — landing page, promo, menu, FAQ, lokasi, login/daftar.
+2. **Pelanggan** — login, pilih menu, keranjang, checkout, pilih Dine-in/Takeaway, pilih meja saat checkout, pembayaran, riwayat, profil, dan voucher.
+3. **Admin** — dashboard operasional, Produk & Stok, Operasional, meja, pelanggan, keuangan.
+4. **Database MySQL** — seluruh data transaksi dan master menggunakan PDO prepared statement.
 
 ## 2. Aturan QR yang sudah final
 QR yang ditempel di warung adalah **QR eksternal**, dibuat di luar project dan hanya berisi URL website yang sudah di-hosting.
 
 Contoh konsep:
 
-`QR warung â†’ https://domain-warung.com/`
+`QR warung → https://domain-warung.com/`
 
 Aplikasi **tidak** membuat QR per meja, tidak meminta `qr_token`, dan tidak memvalidasi token meja.
 
@@ -32,7 +32,7 @@ Admin dapat menambah, edit, aktif/nonaktif, dan menghapus meja dari halaman **Me
 
 ## 3. Alur pelanggan
 
-`Landing â†’ Daftar/Login â†’ Menu â†’ Keranjang â†’ Checkout â†’ Jenis Pesanan â†’ Pilih Meja (jika Dine-in) â†’ Pembayaran â†’ Pesanan`
+`Landing → Daftar/Login → Menu → Keranjang → Checkout → Jenis Pesanan → Pilih Meja (jika Dine-in) → Pembayaran → Pesanan`
 
 ### Dine-in
 Pelanggan memilih:
@@ -46,7 +46,7 @@ Pelanggan memilih:
 - QRIS/Tunai
 - Tidak ada meja.
 
-## 4. Produk & Stok â€” satu menu admin
+## 4. Produk & Stok — satu menu admin
 Menu admin **Produk & Stok** menjadi pusat pengelolaan:
 
 ### Produk
@@ -57,7 +57,7 @@ CRUD melalui form modal dan tombol:
 - sub-kategori
 - harga
 - topping yang tersedia
-- level pedas 0â€“5
+- level pedas 0–5
 - stok awal ketika produk baru dibuat
 - aktif/nonaktif
 
@@ -80,8 +80,8 @@ CRUD melalui UI:
 
 ### Stok Produk & Stok Bahan Baku
 Kedua pengelolaan stok berada di tab **Produk & Stok**, bukan di Operasional:
-- **Stok Produk** â€” menyesuaikan jumlah stok produk. Penyesuaian stok tidak membuat catatan pengeluaran.
-- **Stok Bahan Baku** â€” mencatat bahan, pembelian, dan pembatalan pembelian. Setiap pembelian otomatis membuat satu baris pengeluaran di Keuangan; membatalkan pembelian mengembalikan stok dan menghapus pengeluarannya.
+- **Stok Produk** — menyesuaikan jumlah stok produk. Penyesuaian stok tidak membuat catatan pengeluaran.
+- **Stok Bahan Baku** — mencatat bahan, pembelian, dan pembatalan pembelian. Setiap pembelian otomatis membuat satu baris pengeluaran di Keuangan; membatalkan pembelian mengembalikan stok dan menghapus pengeluarannya.
 
 ### Voucher
 CRUD melalui UI:
@@ -99,10 +99,10 @@ Kode voucher dimasukkan pada halaman checkout. Potongan hanya berlaku jika vouch
 ## 6. Status pesanan
 
 ### Dine-in
-`MENUNGGU_PEMBAYARAN â†’ DIPROSES â†’ SEDANG_DIANTAR â†’ SELESAI`
+`MENUNGGU_PEMBAYARAN → DIPROSES → SEDANG_DIANTAR → SELESAI`
 
 ### Takeaway
-`MENUNGGU_PEMBAYARAN â†’ DIPROSES â†’ SIAP_DIAMBIL â†’ SELESAI`
+`MENUNGGU_PEMBAYARAN → DIPROSES → SIAP_DIAMBIL → SELESAI`
 
 Untuk pembayaran tunai, admin melakukan konfirmasi sebelum order diproses.
 
@@ -110,8 +110,8 @@ Untuk pembayaran tunai, admin melakukan konfirmasi sebelum order diproses.
 
 Frontend tidak lagi memakai framework CSS eksternal. Seluruh tampilan berdiri di atas **CSS biasa + design tokens**:
 
-- `public/assets/css/foundation.css` â€” fondasi: design tokens (warna, font, radius, bayangan, spasi), tipografi selaras, dan komponen dasar (grid, tombol, form, tabel, alert, badge, modal, collapse, utilitas). Ingin mengubah warna brand atau font seluruh aplikasi? Ubah blok `:root` di file ini.
-- `public/assets/css/app.css` â€” gaya spesifik halaman di atas fondasi tersebut.
+- `public/assets/css/foundation.css` — fondasi: design tokens (warna, font, radius, bayangan, spasi), tipografi selaras, dan komponen dasar (grid, tombol, form, tabel, alert, badge, modal, collapse, utilitas). Ingin mengubah warna brand atau font seluruh aplikasi? Ubah blok `:root` di file ini.
+- `public/assets/css/app.css` — gaya spesifik halaman di atas fondasi tersebut.
 - Ikon memakai **SVG inline** melalui helper PHP `icon('nama-ikon')` (didefinisikan di `config/config.php`). Ikon mewarisi warna teks sehingga selalu selaras; tidak ada dependensi CDN ikon.
 - Modal & collapse digerakkan oleh JavaScript vanilla (`WMJ.modal.open/close`, `data-modal-open`, `data-modal-close`, `data-collapse-target`) di `public/assets/js/app.js`.
 
@@ -121,7 +121,7 @@ Font distandarkan (satu pasangan, dideklarasikan sebagai token `--font-sans` dan
 
 Target responsive:
 - Desktop: >=1024px
-- Tablet: 768â€“1023px
+- Tablet: 768–1023px
 - Mobile: <=767px
 
 Layout dipisahkan secara visual antara:
@@ -132,70 +132,34 @@ Layout dipisahkan secara visual antara:
 
 Admin memakai sidebar + topbar. Customer memakai header pelanggan. Landing memakai header marketing. Halaman login/daftar memakai header minimal.
 
-## 8. Instalasi tanpa CMD
+## 8. Instalasi lokal (XAMPP)
 
-### Database
-Gunakan **phpMyAdmin**:
+1. Buat database kosong bernama `maem_jadoel` di phpMyAdmin.
+2. Pilih database tersebut, buka tab **Import**, lalu impor `database/database.sql`.
+3. Salin `.env.example` menjadi `.env` dan sesuaikan konfigurasi MySQL lokal.
+4. Buka `http://localhost/warung-maem-jadoel/` jika folder project berada di `htdocs/warung-maem-jadoel`.
 
-1. Backup database lama jika diperlukan.
-2. Drop database lama untuk lingkungan development.
-3. Buat database baru sesuai `.env` (default: `maem_jadoel`).
-4. Klik **Import**.
-5. Pilih `database/database.sql`.
-6. Klik **Go**.
-
-### Project
-Extract folder project ke:
-
-`C:\xampp\htdocs\warung-maem-jadoel`
-
-atau folder htdocs XAMPP yang digunakan.
-
-Buka:
-
-`http://localhost/warung-maem-jadoel/public/`
-
-Tidak diperlukan QR meja untuk testing.
-
-Untuk pengelolaan produk, kategori, topping, voucher, meja, stok, pelanggan, dan keuangan gunakan menu admin melalui browser. Database baru memulai katalog produk dalam keadaan kosong; produk ditambahkan sendiri oleh admin melalui Produk & Stok.
-
-## 9. Akun admin seed
+## 9. Akun admin awal
 
 Username: `admin`
 
 Email: `admin@maemjadoel.test`
 
-Password: `Admin123!`
+Password awal: `Admin123!`
 
-## 10. Database development
+Segera ganti password setelah login pertama.
 
-Project ini sekarang memakai **satu file SQL saja** sebagai sumber database utama:
+## 10. Database
 
-`database/database.sql`
+`database/database.sql` adalah satu-satunya SQL untuk instalasi bersih. File ini berisi schema inti POS dan modul e-commerce yang dipakai aplikasi, termasuk alamat, pengiriman, voucher, keranjang, chat, resep, pembelian bahan, dan ulasan produk.
 
-File tersebut sudah berisi pembuatan database, seluruh tabel, foreign key, index, kategori awal, topping awal, 4 meja default, dan akun admin seed.
+File SQL final tidak membuat database, tidak memilih nama database, dan tidak menghapus tabel. Buat/pilih database terlebih dahulu di phpMyAdmin. Untuk instalasi baru, impor satu file tersebut saja.
 
-Untuk instalasi development, cukup import **satu file tersebut** melalui phpMyAdmin setelah membuat/memilih database `maem_jadoel`. Jika database lama berisi data yang ingin dipertahankan, lakukan backup terlebih dahulu. Untuk instalasi bersih, import `database/database.sql` sebagai satu-satunya file SQL project.
+File terdahulu disimpan di `database/legacy-migrations/` untuk referensi historis; jangan impor file-file tersebut setelah mengimpor SQL final.
 
-Project tidak lagi menyertakan file migration atau reset transaksi terpisah agar tidak terjadi kebingungan versi schema. Jika membutuhkan reset data testing, lakukan backup lalu gunakan database development yang bersih dengan mengimpor ulang `database/database.sql`.
+## 10A. Hosting InfinityFree
 
-## 10. Struktur utama
-
-```text
-config/
-controller/
-model/
-services/
-view/
-  admin/
-  auth/
-  order/
-  partials/
-assets/
-public/
-database/
-docs/
-```
+Baca `INSTALL_INFINITYFREE.md` untuk panduan lengkap pembuatan database, upload `htdocs`, konfigurasi `.env`, dependensi SMTP, dan Midtrans.
 
 ## 11. Teknologi
 - PHP Native 8.2+
@@ -222,12 +186,12 @@ Semua aktivitas operasional admin dibuat melalui halaman/form di browser. Databa
 
 
 ## Fitur Ulasan Pelanggan
-- Instalasi baru: jalankan `database/database.sql` (skrip instalasi bersih dan menghapus tabel lama).
-- Database yang sudah berisi data: backup terlebih dahulu, lalu jalankan `database/migration_ulasan.sql` saja. Jangan jalankan ulang SQL instalasi bersih pada database berisi data.
-- Pelanggan dapat mengulas transaksi miliknya setelah status `SELESAI`, satu ulasan per transaksi, rating 1â€“5, komentar opsional. Edit dibatasi 7 hari dari waktu pembuatan pertama.
+- Instalasi baru: jalankan `database/database.sql` pada database kosong (skrip membuat seluruh tabel yang dipakai aplikasi).
+- Database yang sudah berisi data: backup terlebih dahulu, lalu jalankan migrasi yang sesuai. Jangan jalankan ulang SQL instalasi bersih pada database berisi data.
+- Pelanggan dapat mengulas transaksi miliknya setelah status `SELESAI`, satu ulasan per transaksi, rating 1–5, komentar opsional. Edit dibatasi 7 hari dari waktu pembuatan pertama.
 - Admin hanya dapat melihat ulasan pelanggan dan mengubah statusnya antara `DITAMPILKAN` dan `DISEMBUNYIKAN`. Admin tidak dapat mengedit atau menghapus isi ulasan. Hanya `DITAMPILKAN` yang muncul pada Landing Page di bagian **Ulasan Pelanggan**. Tidak ada ulasan contoh.
 
-## VE29 â€” Perbaikan No. Pesanan, Profil, dan Riwayat
+## VE29 — Perbaikan No. Pesanan, Profil, dan Riwayat
 
 Jika database lama berasal dari VE27/VE28, wajib menjalankan `database/migration_nomor_pesanan_bonus.sql` satu kali. Error `Unknown column 't.nomor_pesanan'` pada Profil dan `Undefined array key "nomor_pesanan"` pada Riwayat terjadi ketika database lama belum memiliki kolom `transaksi_penjualan.nomor_pesanan`.
 
@@ -239,17 +203,11 @@ Migrasi VE29 diperbaiki agar aman untuk database yang kolom `nomor_pesanan`-nya 
 Untuk setup payment gateway QRIS, baca `docs/MIDTRANS_SANDBOX.md`. Gunakan `MIDTRANS_MODE=sandbox` dan isi `MIDTRANS_SERVER_KEY` di `.env` lokal. Jangan membagikan file `.env`. Jika memakai database lama, jalankan migration `database/migration_midtrans_qris.sql` setelah backup. URL webhook wajib dapat diakses dari internet melalui HTTPS.
 
 
-## Deploy ke Vercel (PHP Native)
+## Catatan deploy InfinityFree
 
-Project ini bukan aplikasi Node.js; konfigurasi Vercel menggunakan runtime PHP komunitas `vercel-php`. File konfigurasi dan entrypoint sudah disediakan: `vercel.json` dan `api/index.php`.
-
-**Langkah deploy:**
-1. Push folder project (tanpa `.env`) ke repository GitHub.
-2. Import repository di Vercel, Framework Preset pilih **Other**, Root Directory gunakan root project.
-3. Tambahkan Environment Variables di Vercel (Production dan Preview sesuai kebutuhan): `APP_ENV=production`, `APP_URL=https://domain-deployment-anda`, `APP_TIMEZONE=Asia/Jakarta`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_ENCRYPTION`, `MAIL_FROM`, `MAIL_FROM_NAME`, `PAYMENT_PROVIDER`, `MIDTRANS_MODE`, `MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`.
-4. Gunakan database MySQL/MariaDB yang dapat diakses dari internet oleh server Vercel (bukan `127.0.0.1`/database XAMPP lokal). Import `database/database.sql` pada database hosting.
-5. Deploy. Routing Vercel meneruskan `/` dan endpoint `?r=...` ke PHP front controller; aset `/assets/...` diarahkan ke `public/assets`.
-
-**Batasan hosting serverless:** file gambar yang diupload aplikasi disimpan ke folder project dan filesystem serverless Vercel tidak permanen. Upload foto menu/QRIS tidak akan terjamin tersimpan setelah deployment baru atau cold instance. Untuk produksi, pindahkan upload ke object storage (misalnya Vercel Blob atau Cloudinary) dan ubah helper upload agar menyimpan di sana. Database dan email juga perlu layanan eksternal.
-
-Jangan commit `.env`; file itu sudah dikecualikan oleh `.gitignore` dan `.vercelignore`. Jika kunci Midtrans dalam file `.env` yang pernah dibagikan adalah kunci aktif, segera rotate/regenerate di dashboard Midtrans.
+- File schema final tersedia di `database/database.sql`. Import file ini ke database **kosong** yang dibuat dari panel InfinityFree. File tidak memilih/membuat database dan tidak menghapus tabel, jadi jangan impor ulang di database yang sudah berisi data.
+- File `.env` berisi kredensial dan tidak disertakan dalam paket. Buat `.env` dari `.env.example`, lalu isi host/nama/user/password database dari panel InfinityFree.
+- `APP_URL` sebaiknya dikosongkan. Aplikasi mendeteksi domain, HTTPS, dan folder instalasi secara otomatis; nilai `http://localhost/...` yang tertinggal akan membuat link mengarah ke komputer lokal.
+- Saat `APP_ENV=production`, halaman error tidak memaparkan stack trace atau path server; rincian ditulis ke error log.
+- `public/index.php` meneruskan request ke entry point utama supaya tidak ada dua sistem routing berbeda.
+- Panduan lengkap ada di `INSTALL_INFINITYFREE.md`.

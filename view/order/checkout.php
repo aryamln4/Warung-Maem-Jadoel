@@ -347,7 +347,7 @@ strtotime($tx['tanggal']))?></p>
       }
     }catch(e){}
   }
-  pollOrder(); setInterval(pollOrder,3000);
+  pollOrder(); setInterval(function(){ if(!document.hidden) pollOrder(); },10000);
 })();
 </script>
 <?php endif;

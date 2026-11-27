@@ -226,7 +226,7 @@ class AdminController {
     }
     /**
      * Tarik status pembayaran QRIS langsung dari API Midtrans (server-to-server).
-     * Dipakai ketika webhook tidak sampai (mis. pengujian di localhost) â€” klik tombol
+     * Dipakai ketika webhook tidak sampai (mis. pengujian di localhost) — klik tombol
      * "Cek Status QRIS" pada pesanan, sistem akan menyinkronkan status dari Midtrans.
      */
     public function checkPayment(): void {
@@ -521,7 +521,7 @@ class AdminController {
         $f=new FinanceModel();
         if($id>0 && $f->isPurchaseExpense($id)){
             flash('error',
-            'Pengeluaran ini berasal dari pembelian bahan baku. Batalkan lewat tab Produk & Stok â†’ Stok Bahan Baku agar stok ikut kembali.');
+            'Pengeluaran ini berasal dari pembelian bahan baku. Batalkan lewat tab Produk & Stok → Stok Bahan Baku agar stok ikut kembali.');
             redirect(APP_URL.'/index.php?r=admin/operations&tab=pengeluaran');
         }
         if($id>0) $f->deleteExpense($id);
@@ -658,6 +658,68 @@ class AdminController {
         } catch(Throwable $e){
             flash('error',
             $e->getMessage() ?: 'Gagal menyimpan bahan baku. Kode produk mungkin sudah digunakan.');
+        }
+        redirect(APP_URL.'/index.php?r=admin/menu#bahan');
+    }
+
+    /** Perbarui data master bahan baku (kode, nama, kadaluarsa, satuan, harga). */
+    public function updateBahan(): void {
+        $this->guard();
+        verify_csrf();
+        $this->ensureInventoryTables();
+        $id=(int)($_POST['id']??0);
+        $kode=trim((string)($_POST['kode_produk']??''));
+        $nama=trim((string)($_POST['nama_bahan']??''));
+        $exp=(string)($_POST['tanggal_kadaluarsa']??'');
+        $unit=(string)($_POST['satuan']??'');
+        $hargaRaw=$_POST['harga']??null;
+        $harga=is_numeric($hargaRaw)?(float)$hargaRaw:-1;
+        $expParts=explode('-', $exp);
+        $expValid=count($expParts)===3&&ctype_digit($expParts[0])&&ctype_digit($expParts[1])&&ctype_digit($expParts[2])&&checkdate((int)$expParts[1],(int)$expParts[2],(int)$expParts[0]);
+        if($id<1||$kode===''||$nama===''||!$expValid||!in_array($unit,
+        ['gram',
+        'kilo',
+        'pcs'],
+        true)||$harga<0){
+            flash('error',
+            'Lengkapi data bahan baku dengan benar.');
+            redirect(APP_URL.'/index.php?r=admin/menu#bahan');
+        }
+        try{
+            (new InventoryModel())->updateBahan($id, [
+                'kode_produk'=>$kode,
+                'nama_bahan'=>$nama,
+                'tanggal_kadaluarsa'=>$exp,
+                'satuan'=>$unit,
+                'harga'=>$harga,
+            ]);
+            flash('success',
+            'Data bahan baku berhasil diperbarui.');
+        } catch(Throwable $e){
+            flash('error',
+            $e->getMessage() ?: 'Gagal memperbarui bahan baku.');
+        }
+        redirect(APP_URL.'/index.php?r=admin/menu#bahan');
+    }
+
+    /** Hapus bahan yang belum dipakai resep dan belum punya riwayat pembelian. */
+    public function deleteBahan(): void {
+        $this->guard();
+        verify_csrf();
+        $this->ensureInventoryTables();
+        $id=(int)($_POST['id']??0);
+        if($id<1){
+            flash('error',
+            'Bahan baku tidak ditemukan.');
+            redirect(APP_URL.'/index.php?r=admin/menu#bahan');
+        }
+        try{
+            (new InventoryModel())->deleteBahan($id);
+            flash('success',
+            'Bahan baku berhasil dihapus.');
+        } catch(Throwable $e){
+            flash('error',
+            $e->getMessage() ?: 'Gagal menghapus bahan baku.');
         }
         redirect(APP_URL.'/index.php?r=admin/menu#bahan');
     }

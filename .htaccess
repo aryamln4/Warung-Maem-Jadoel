@@ -1,15 +1,20 @@
-# Proteksi folder aplikasi Warung Maem Jadoel
-# Semua eksekusi harus lewat /public/index.php — file internal & rahasia tidak boleh dilayani.
+# Shared-hosting-safe Apache rules (avoid Options directives).
+DirectoryIndex index.php
 
-# Matikan directory listing
-Options -Indexes
+<IfModule mod_autoindex.c>
+    IndexIgnore *
+</IfModule>
 
-# Blokir file rahasia & file teknis: .env (kredensial DB/pembayaran), backup, log, dump
-<FilesMatch "(\.env|\.env\.|~\.?|\.bak|\.sql|\.log|\.ini|\.lock|\.md)$">
-    Require all denied
-</FilesMatch>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Preserve the app's public asset URLs while files live under public/assets.
+    RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+    # Internal source/config folders must not be served directly.
+    RewriteRule ^(config|controller|model|services|view|database|docs|vendor)(/|$) - [F,L,NC]
+</IfModule>
 
-# Blokir file dot apa pun (mis. .git, .env, .DS_Store)
-<FilesMatch "^\.">
-    Require all denied
-</FilesMatch>
+<IfModule mod_authz_core.c>
+    <FilesMatch "(^\.env|\.env\.|\.(sql|log|ini|lock|md|bak|dist|old|swp)$|composer\.(json|lock)$|^\.git|^\.ht)">
+        Require all denied
+    </FilesMatch>
+</IfModule>

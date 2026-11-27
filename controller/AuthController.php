@@ -145,12 +145,19 @@ class AuthController {
                 date('Y-m-d H:i:s',
                 time()+3600));
                 $link=APP_URL.'/index.php?r=auth/reset&token='.urlencode($raw);
-                try{
-                    (new MailerService())->sendReset($u['email'],
-                    $u['nama'],
-                    $link);
-                } catch(Throwable $e){
-                }
+                try {
+    				(new MailerService())->sendReset(
+        				$u['email'],
+        				$u['nama'],
+        				$link
+    				);
+
+    			error_log('[Password Reset] Email berhasil dikirim.');
+			} catch (Throwable $e) {
+    			error_log(
+        		'[Password Reset SMTP] ' . $e->getMessage()
+    			);
+			}
             }
             // PRG: tetap berada di Landing Page dan buka modal lupa sandi.
             redirect(APP_URL.'/index.php?r=landing&forgot=1&sent=1');

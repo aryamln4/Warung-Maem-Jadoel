@@ -1,2 +1,11 @@
-Options -Indexes
 DirectoryIndex index.php
+
+<IfModule mod_autoindex.c>
+    IndexIgnore *
+</IfModule>
+
+<IfModule mod_authz_core.c>
+    <FilesMatch "(^\.env|\.sql$|\.log$|\.ini$|\.lock$|\.md$|\.bak$)">
+        Require all denied
+    </FilesMatch>
+</IfModule>

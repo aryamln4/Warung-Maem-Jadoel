@@ -89,13 +89,82 @@ class InventoryModel extends BaseModel {
             if ($stok > 0) {
                 $this->insertPurchase($id,
                 $stok,
-                (string)$d['tanggal_kadaluarsa'],
+                date('Y-m-d'),
                 'Stok awal bahan baru',
                 $createdBy,
                 (float)$d['harga']);
             }
             $this->db->commit();
             return $id;
+        } catch (Throwable $e) {
+            if ($this->db->inTransaction()) $this->db->rollBack();
+            throw $e;
+        }
+    }
+
+    /** Ambil satu bahan baku untuk keperluan edit. */
+    public function findBahan(int $id): ?array {
+        $s = $this->db->prepare('SELECT * FROM bahan_baku WHERE id=? LIMIT 1');
+        $s->execute([$id]);
+        $row = $s->fetch();
+        return $row ?: null;
+    }
+
+    /** Perbarui data master bahan. Stok tetap dikelola lewat pembelian/penyesuaian. */
+    public function updateBahan(int $id, array $d): void {
+        if ($id < 1) throw new RuntimeException('Bahan baku tidak ditemukan.');
+        $this->db->beginTransaction();
+        try {
+            $exists = $this->db->prepare('SELECT id FROM bahan_baku WHERE id=? LIMIT 1 FOR UPDATE');
+            $exists->execute([$id]);
+            if ($exists->fetchColumn() === false) {
+                throw new RuntimeException('Bahan baku tidak ditemukan.');
+            }
+            $this->db->prepare('UPDATE bahan_baku SET kode_produk=?,nama_bahan=?,tanggal_kadaluarsa=?,satuan=?,harga=? WHERE id=?')
+                ->execute([
+                    trim((string)$d['kode_produk']),
+                    trim((string)$d['nama_bahan']),
+                    (string)$d['tanggal_kadaluarsa'],
+                    (string)$d['satuan'],
+                    max(0, (float)$d['harga']),
+                    $id,
+                ]);
+            $this->db->commit();
+        } catch (Throwable $e) {
+            if ($this->db->inTransaction()) $this->db->rollBack();
+            if ($e instanceof PDOException && $e->getCode() === '23000') {
+                throw new RuntimeException('Kode produk sudah dipakai bahan lain. Gunakan kode yang berbeda.');
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Hapus bahan yang belum dipakai resep dan belum punya riwayat pembelian.
+     * Riwayat pembelian sengaja dipertahankan agar laporan keuangan tetap utuh.
+     */
+    public function deleteBahan(int $id): void {
+        $this->db->beginTransaction();
+        try {
+            $s = $this->db->prepare("SELECT b.id,b.nama_bahan,
+                (SELECT COUNT(*) FROM pembelian_bahan p WHERE p.bahan_baku_id=b.id) purchases,
+                (SELECT COUNT(*) FROM resep_produk r WHERE r.bahan_baku_id=b.id) recipes,
+                (SELECT COUNT(*) FROM kartu_stok_bahan k WHERE k.bahan_baku_id=b.id) stock_history
+                FROM bahan_baku b WHERE b.id=? LIMIT 1 FOR UPDATE");
+            $s->execute([$id]);
+            $row = $s->fetch();
+            if (!$row) throw new RuntimeException('Bahan baku tidak ditemukan.');
+            if ((int)$row['purchases'] > 0) {
+                throw new RuntimeException('Bahan '.$row['nama_bahan'].' sudah punya riwayat pembelian. Riwayat harus dipertahankan agar laporan keuangan tetap akurat.');
+            }
+            if ((int)$row['recipes'] > 0) {
+                throw new RuntimeException('Bahan '.$row['nama_bahan'].' masih dipakai pada resep produk. Hapus bahan dari resep terlebih dahulu.');
+            }
+            if ((int)$row['stock_history'] > 0) {
+                throw new RuntimeException('Bahan '.$row['nama_bahan'].' memiliki riwayat kartu stok. Riwayat stok tidak boleh dihapus; bahan ini tidak dapat dihapus.');
+            }
+            $this->db->prepare('DELETE FROM bahan_baku WHERE id=?')->execute([$id]);
+            $this->db->commit();
         } catch (Throwable $e) {
             if ($this->db->inTransaction()) $this->db->rollBack();
             throw $e;

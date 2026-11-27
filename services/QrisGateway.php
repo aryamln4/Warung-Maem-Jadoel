@@ -38,15 +38,33 @@ final class MidtransQrisGateway implements QrisGatewayInterface {
     string $customerName): array {
         if ($amount < 1) throw new RuntimeException('Nominal QRIS tidak valid.');
         $payload = [
-        'payment_type' => 'qris',
-        'transaction_details' => ['order_id' => $orderId,
-        'gross_amount' => $amount],
-        'customer_details' => ['first_name' => substr($customerName ?: 'Pelanggan',
-        0,
-        50),
-        'email' => $customerEmail],
-        'qris' => ['acquirer' => 'gopay']
-        ];
+            'payment_type' => 'qris',
+
+            'transaction_details' => [
+            'order_id' => $orderId,
+            'gross_amount' => $amount
+            ],
+
+            'customer_details' => [
+                'first_name' => substr(
+                $customerName ?: 'Pelanggan',
+                    0,
+                    50
+                ),
+            'email' => $customerEmail
+            ],
+
+        'qris' => [
+            'acquirer' => 'gopay'
+        ],
+
+        // Masa berlaku QRIS 10 menit
+        'custom_expiry' => [
+            'order_time' => date('Y-m-d H:i:s O'),
+            'expiry_duration' => 10,
+            'unit' => 'minute'
+        ]
+    ];
         $response = $this->request('POST',
         '/v2/charge',
         $payload);

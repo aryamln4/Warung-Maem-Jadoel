@@ -130,7 +130,7 @@ strtotime($m['created_at']))?><?= $me && !empty($m['dibaca_admin_at']) ? ' · Di
       }
     }catch(e){}
   }
-  setInterval(poll,3500);
+  setInterval(function(){ if(!document.hidden) poll(); },8000);
   document.querySelectorAll('[data-quick]').forEach(b=>b.addEventListener('click',()=>{ input.value=b.dataset.quick; input.focus(); }));
   form.addEventListener('submit',async function(e){
     e.preventDefault();
