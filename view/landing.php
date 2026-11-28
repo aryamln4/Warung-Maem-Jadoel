@@ -1,9 +1,12 @@
-<?php $title='Warung Maem Jadoel';
-require BASE_PATH.'/view/partials/header.php';
+<?php
+$title='Warung Maem Jadoel';
+// Ambil data yang memerlukan database SEBELUM mengirim HTML/header.
+// Jika koneksi gagal, front controller dapat merender error tanpa headers-already-sent.
 $menuModel=new MenuModel();
 $featured=$menuModel->featured();
 $publicReviews=(new ReviewController())->publicList();
 $promoVouchers=(new VoucherModel())->activeList(3);
+require BASE_PATH.'/view/partials/header.php';
 $voucherValue=static function(array $v): string {
     if($v['tipe']==='PERSEN') return 'Potongan '.(float)$v['nilai'].'%';
     if($v['tipe']==='ONGKIR') return (float)$v['nilai']>0 ? 'Ongkir '.rupiah($v['nilai']) : 'Gratis ongkir';

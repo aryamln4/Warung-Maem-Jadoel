@@ -10,6 +10,9 @@ class AdminController {
         $db->exec("CREATE TABLE IF NOT EXISTS bahan_baku (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, kode_produk VARCHAR(40) NOT NULL UNIQUE, nama_bahan VARCHAR(150) NOT NULL, tanggal_kadaluarsa DATE NOT NULL, stok DECIMAL(12,3) NOT NULL DEFAULT 0, satuan ENUM('gram','kilo','pcs') NOT NULL, harga DECIMAL(14,2) NOT NULL DEFAULT 0, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, INDEX idx_bahan_fefo (tanggal_kadaluarsa,id)) ENGINE=InnoDB");
         $db->exec("CREATE TABLE IF NOT EXISTS kartu_stok_bahan (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, bahan_baku_id BIGINT UNSIGNED NOT NULL, jenis ENUM('MASUK','KELUAR','PENYESUAIAN') NOT NULL, jumlah DECIMAL(12,3) NOT NULL, keterangan VARCHAR(255) NULL, tanggal TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, INDEX idx_kartu_bahan_tanggal (bahan_baku_id,tanggal), CONSTRAINT fk_kartu_bahan FOREIGN KEY (bahan_baku_id) REFERENCES bahan_baku(id) ON DELETE RESTRICT) ENGINE=InnoDB");
         $db->exec("CREATE TABLE IF NOT EXISTS pembelian_bahan (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, bahan_baku_id BIGINT UNSIGNED NOT NULL, keuangan_id BIGINT UNSIGNED NULL, jumlah DECIMAL(12,3) NOT NULL, harga_satuan DECIMAL(14,2) NOT NULL DEFAULT 0, total DECIMAL(14,2) NOT NULL DEFAULT 0, tanggal DATE NOT NULL, status ENUM('AKTIF','DIBATALKAN') NOT NULL DEFAULT 'AKTIF', keterangan VARCHAR(255) NULL, created_by VARCHAR(60) NULL, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, INDEX idx_pembelian_bahan (bahan_baku_id,tanggal), CONSTRAINT fk_pembelian_bahan FOREIGN KEY (bahan_baku_id) REFERENCES bahan_baku(id) ON DELETE RESTRICT) ENGINE=InnoDB");
+        // Idempotent schema upgrade: old recipe data is preserved and defaults to ingredient unit.
+        $recipeCols=$db->query("SHOW COLUMNS FROM resep_produk LIKE 'satuan_resep'")->fetchAll();
+        if (!$recipeCols) $db->exec("ALTER TABLE resep_produk ADD COLUMN satuan_resep VARCHAR(12) NULL DEFAULT NULL AFTER keterangan");
     }
     public function dashboard(): void {
         $this->guard();
@@ -360,6 +363,7 @@ class AdminController {
         $f=new FinanceModel();
         $summary=$f->summary($from,
         $to);
+        $expenseBreakdown=$f->expenseBreakdown($from,$to);
         $sales=$f->salesSummary($from,
         $to);
         $transactions=$f->transactionSales($from,
@@ -555,11 +559,13 @@ class AdminController {
         $bahanIds=$_POST['bahan_baku_id']??[];
         $jumlah=$_POST['jumlah']??[];
         $keterangan=$_POST['keterangan']??[];
+        $satuanResep=$_POST['satuan_resep']??[];
         if(is_array($bahanIds)&&is_array($jumlah)){
             foreach($bahanIds as $i=>$bid){
                 $rows[]=['bahan_baku_id'=>(int)$bid,
                 'jumlah'=>(float)($jumlah[$i]??0),
-                'keterangan'=>trim((string)($keterangan[$i]??''))];
+                'keterangan'=>trim((string)($keterangan[$i]??'')),
+                'satuan_resep'=>trim((string)($satuanResep[$i]??''))];
             }
         }
         try {

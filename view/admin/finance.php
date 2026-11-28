@@ -50,7 +50,7 @@ require BASE_PATH.'/view/partials/header.php';
 0,
 ',',
 '.')?></span>
-      <span class="stat-note">Total kas keluar pada periode terpilih</span>
+      <span class="stat-note">Termasuk pembelian bahan baku otomatis dan biaya operasional toko</span>
     </div>
     <div class="stat-card <?= $summary['LABA_RUGI'] < 0 ? 'stat-card-alert' : '' ?>">
       <span class="stat-label"><?= icon('wallet') ?> <?= $summary['LABA_RUGI'] >= 0 ? 'Pendapatan Bersih' : 'Rugi' ?></span>
@@ -61,6 +61,21 @@ require BASE_PATH.'/view/partials/header.php';
       <span class="stat-note">Total Pendapatan − Uang Pengeluaran</span>
     </div>
   </div>
+
+  <!-- Rincian uang pengeluaran: pembelian bahan baku dan operasional digabung -->
+  <section class="panel-card mb-3">
+    <div class="panel-header"><div><span class="eyebrow">Rincian kas keluar</span><h2 class="section-title mb-0">Uang Pengeluaran per Kategori</h2><p class="page-subtitle mb-0 mt-2">Pembelian bahan baku dari menu Produk &amp; Stok tercatat berdasarkan jumlah pembelian × harga per unit pada kategori Bahan Baku, lalu dijumlahkan dengan biaya operasional toko. Nilai stok di kartu inventori adalah ringkasan harga master dan tidak ditambahkan lagi agar tidak terjadi pencatatan ganda.</p></div></div>
+    <div class="table-responsive admin-table-wrap">
+      <table class="table admin-table align-middle mb-0">
+        <thead><tr><th>Kategori</th><th>Jumlah transaksi</th><th class="text-end">Total pengeluaran</th></tr></thead>
+        <tbody>
+          <?php if(empty($expenseBreakdown)): ?><tr><td colspan="3"><div class="empty-state"><strong>Belum ada pengeluaran pada periode ini.</strong></div></td></tr><?php else: foreach($expenseBreakdown as $expenseCategory): ?>
+          <tr><td><?=e($expenseCategory['kategori'])?></td><td><?= (int)$expenseCategory['transaksi'] ?></td><td class="text-end"><strong>Rp <?=number_format((float)$expenseCategory['total'],0,',','.')?></strong></td></tr>
+          <?php endforeach; endif; ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
   <!-- Input manual -->
   <section class="panel-card mb-3">

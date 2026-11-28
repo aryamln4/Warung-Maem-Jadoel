@@ -20,6 +20,14 @@ class FinanceModel extends BaseModel {
         return $r;
     }
 
+
+    /** Pengeluaran terakumulasi per kategori, termasuk pembelian bahan baku otomatis. */
+    public function expenseBreakdown(string $from, string $to): array {
+        $s=$this->db->prepare("SELECT kategori,COUNT(*) transaksi,COALESCE(SUM(jumlah),0) total FROM keuangan WHERE jenis='PENGELUARAN' AND tanggal BETWEEN ? AND ? GROUP BY kategori ORDER BY total DESC,kategori");
+        $s->execute([$from,$to]);
+        return $s->fetchAll();
+    }
+
     public function salesSummary(string $from, string $to): array {
         $s = $this->db->prepare("SELECT DATE(tanggal) tanggal,COUNT(*) transaksi,SUM(total_bayar) total FROM transaksi_penjualan WHERE status_pembayaran='TERVERIFIKASI' AND status_pesanan='SELESAI' AND DATE(tanggal) BETWEEN ? AND ? GROUP BY DATE(tanggal) ORDER BY tanggal");
         $s->execute([$from, $to]);

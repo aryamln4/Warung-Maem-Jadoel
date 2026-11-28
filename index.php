@@ -1,4 +1,6 @@
 <?php
+// Buffer output so an exception after a view starts rendering can still set HTTP status/headers.
+if (ob_get_level() === 0) { ob_start(); }
 /**
  * Warung Maem Jadoel
  * Front Controller - Lazy Initialization
@@ -491,7 +493,16 @@ try {
 
  } catch (Throwable $e) {
 
-    http_response_code(500);
+    // Discard partial page output before rendering the error response.
+    // Bersihkan output parsial. Jangan memanggil http_response_code jika header
+    // sudah terkirim (akan menimbulkan warning sekunder dan menutupi error utama).
+    if (!headers_sent()) {
+        while (ob_get_level() > 0) { ob_end_clean(); }
+        http_response_code(500);
+    } else {
+        headers_sent($sentFile, $sentLine);
+        error_log('[HTTP] Headers already sent at ' . $sentFile . ':' . $sentLine);
+    }
     error_log(
         '[Warung Maem Jadoel] ' . $e->getMessage() .
         ' in ' . $e->getFile() . ':' . $e->getLine() .

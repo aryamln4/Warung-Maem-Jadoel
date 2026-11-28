@@ -108,12 +108,13 @@ $navActive = static function (string $prefix) use ($route): bool {
         </nav>
 
     </aside>
+    <button type="button" class="admin-sidebar-backdrop" id="adminSidebarBackdrop" aria-label="Tutup menu admin"></button>
 
     <main class="admin-main">
         <header class="admin-topbar">
             <div class="admin-topbar-left">
                 <button class="admin-menu-toggle" type="button"
-                        onclick="document.getElementById('adminSidebar').classList.toggle('open')"
+                        
                         aria-label="Buka menu admin">
                     <?= icon('menu') ?> Menu
                 </button>
@@ -231,8 +232,7 @@ true) ? 'active' : '' ?>" href="<?= APP_URL ?>/index.php?r=order/history"><?= ic
         <a href="<?= APP_URL ?>/#faq">FAQ</a>
         <a href="<?= APP_URL ?>/#ulasan-pelanggan">Ulasan</a>
         <a href="<?= APP_URL ?>/#lokasi">Lokasi</a>
-        <?php if (!empty($_SESSION['customer_id'])): ?><a href="<?= APP_URL ?>/index.php?r=order/menu">Masuk ke Pesanan</a><a href="<?= APP_URL ?>/index.php?r=auth/profile">Profil</a><?php else: ?><button type="button" data-modal-open="#loginModal">Masuk</button><button type="button" data-modal-open="#registerModal">Daftar</button><?php endif;
-?>
+        <?php if (!empty($_SESSION['customer_id'])): ?><a href="<?= APP_URL ?>/index.php?r=order/menu">Masuk ke Pesanan</a><a href="<?= APP_URL ?>/index.php?r=auth/profile">Profil</a><?php endif; ?>
     </div>
 </header>
 

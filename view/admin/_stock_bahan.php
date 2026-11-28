@@ -11,7 +11,7 @@ foreach ($bahan as $b) {
         $expiredBahan[] = $b;
     } else {
         $activeBahan[] = $b;
-        $bahanTotal += (float)$b['stok'] * (float)$b['harga'];
+        $bahanTotal += (float)$b['harga'];
     }
 }
 ?>
@@ -30,11 +30,12 @@ foreach ($bahan as $b) {
     <div class="stat-card">
       <span class="stat-label">Nilai Bahan Aktif</span>
       <span class="stat-value" style="font-size:1.35rem"><?=rupiah($bahanTotal)?></span>
-      <span class="stat-note">Stok aktif × harga satuan.</span>
+      <span class="stat-note">Jumlah harga bahan aktif, tanpa dikalikan stok.</span>
     </div>
   </div>
 
-  <section class="panel-card">
+  <div class="admin-tabs bahan-stock-tabs" role="tablist" aria-label="Tab stok bahan baku"><button type="button" class="admin-tab active" data-bahan-tab="aktif" aria-selected="true">Stok Aktif</button><button type="button" class="admin-tab" data-bahan-tab="riwayat" aria-selected="false">Riwayat</button><button type="button" class="admin-tab" data-bahan-tab="kadaluarsa" aria-selected="false">Kadaluarsa</button></div>
+  <section class="panel-card bahan-stock-tab-panel" data-bahan-panel="aktif">
     <div class="panel-header">
       <div>
         <span class="eyebrow">Inventori bahan</span>
@@ -48,8 +49,8 @@ foreach ($bahan as $b) {
     </div>
 
     <div class="table-responsive admin-table-wrap">
-      <table class="table admin-table align-middle mb-0">
-        <thead><tr><th>Kode</th><th>Nama Bahan</th><th>Kadaluarsa</th><th>Stok</th><th>Satuan</th><th>Harga</th><th>Status FEFO</th><th class="text-end">Aksi</th></tr></thead>
+      <table class="table admin-table align-middle mb-0" data-table-paginate data-page-size="10">
+        <thead><tr><th>Kode</th><th>Nama Bahan</th><th>Kadaluarsa</th><th>Stok</th><th>Satuan</th><th>Harga Bahan</th><th>Status FEFO</th><th class="text-end">Aksi</th></tr></thead>
         <tbody>
         <?php if(!$activeBahan): ?><tr><td colspan="8"><div class="empty-state"><strong>Belum ada bahan baku aktif.</strong><span>Klik Tambah Bahan untuk mencatat bahan baku pertama.</span></div></td></tr><?php endif;
 ?>
@@ -80,14 +81,14 @@ foreach ($bahan as $b) {
     </div>
   </section>
 
-  <section class="panel-card mt-4">
+  <section class="panel-card bahan-stock-tab-panel" data-bahan-panel="kadaluarsa" hidden>
     <div class="panel-header">
       <div><span class="eyebrow">Perlu tindakan</span><h2 class="section-title mb-0">Bahan baku kedaluwarsa</h2><p class="text-muted-custom mb-0">Daftar ini dipisahkan dari stok aktif. Perbarui tanggal kedaluwarsa bila bahan masih layak. Hapus hanya tersedia untuk bahan yang belum punya riwayat pembelian; bila sudah ada riwayat, batalkan pembeliannya lebih dulu agar laporan keuangan tetap akurat.</p></div>
       <span class="menu-count"><?=count($expiredBahan)?> bahan</span>
     </div>
     <div class="table-responsive admin-table-wrap">
-      <table class="table admin-table align-middle mb-0">
-        <thead><tr><th>Kode</th><th>Nama Bahan</th><th>Kadaluarsa</th><th>Stok</th><th>Satuan</th><th>Harga</th><th>Status</th><th class="text-end">Aksi</th></tr></thead>
+      <table class="table admin-table align-middle mb-0" data-table-paginate data-page-size="10">
+        <thead><tr><th>Kode</th><th>Nama Bahan</th><th>Kadaluarsa</th><th>Stok</th><th>Satuan</th><th>Harga Bahan</th><th>Status</th><th class="text-end">Aksi</th></tr></thead>
         <tbody>
         <?php if(!$expiredBahan): ?><tr><td colspan="8"><div class="empty-state"><strong>Tidak ada bahan kedaluwarsa.</strong><span>Semua bahan aktif masih dalam masa layak pakai.</span></div></td></tr><?php endif;
 ?>
@@ -116,12 +117,12 @@ foreach ($bahan as $b) {
     </div>
   </section>
 
-  <section class="panel-card mt-4">
+  <section class="panel-card bahan-stock-tab-panel" data-bahan-panel="riwayat" hidden>
     <div class="panel-header">
       <div><span class="eyebrow">Riwayat pembelian</span><h2 class="section-title mb-0">Pembelian bahan terakhir</h2><p class="text-muted-custom mb-0">Setiap pembelian aktif terhubung ke satu baris pengeluaran di halaman Keuangan. Membatalkan pembelian akan mengembalikan stok dan menghapus catatan pengeluarannya.</p></div>
     </div>
     <div class="table-responsive admin-table-wrap">
-      <table class="table admin-table align-middle mb-0">
+      <table class="table admin-table align-middle mb-0" data-table-paginate data-page-size="10">
         <thead><tr><th>Tanggal</th><th>Bahan</th><th>Jumlah</th><th>Harga Satuan</th><th class="text-end">Total</th><th>Status</th><th class="text-end">Aksi</th></tr></thead>
         <tbody>
         <?php if(empty($bahanPurchases)): ?><tr><td colspan="7"><div class="empty-state"><strong>Belum ada pembelian bahan.</strong><span>Pembelian yang dicatat akan muncul di sini.</span></div></td></tr><?php endif;
@@ -157,7 +158,7 @@ foreach ($bahan as $b) {
     <div class="col-md-4"><label class="form-label">Kadaluarsa <span class="required-mark">*</span></label><input class="form-control" type="date" name="tanggal_kadaluarsa" required min="<?=date('Y-m-d')?>"></div>
     <div class="col-md-3"><label class="form-label">Stok Awal</label><input class="form-control" type="number" name="stok" min="0" step="0.001" required value="0"><div class="form-help">Stok awal dianggap pembelian dan otomatis dicatat sebagai pengeluaran.</div></div>
     <div class="col-md-3"><label class="form-label">Satuan <span class="required-mark">*</span></label><select class="form-select" name="satuan" required><option value="">Pilih satuan</option><option>gram</option><option>kilo</option><option>pcs</option></select></div>
-    <div class="col-md-3"><label class="form-label">Harga Satuan (Rp) <span class="required-mark">*</span></label><input class="form-control" type="number" name="harga" min="0" step="0.01" required></div>
+    <div class="col-md-3"><label class="form-label">Harga per Unit (Rp) <span class="required-mark">*</span></label><input class="form-control" type="number" name="harga" min="0" step="0.01" required></div>
     <div class="col-12 form-actions"><button class="btn btn-primary" type="submit">Simpan Bahan</button><button type="button" class="btn btn-secondary-soft" data-modal-close>Batal</button></div>
   </form>
 
@@ -175,7 +176,7 @@ foreach ($bahan as $b) {
     <div class="col-md-2"><label class="form-label">Tanggal <span class="required-mark">*</span></label><input class="form-control" type="date" name="tanggal" required value="<?=date('Y-m-d')?>"></div>
     <div class="col-md-3"><label class="form-label">Catatan</label><input class="form-control" name="keterangan" maxlength="180" placeholder="Nomor nota / pemasok"></div>
     <div class="col-12">
-      <div class="form-help" id="purchaseEstimate">Pilih bahan dan jumlah untuk melihat estimasi total. Harga mengikuti master bahan baku.</div>
+      <div class="form-help" id="purchaseEstimate">Pilih bahan dan jumlah untuk melihat estimasi total. Harga mengikuti master bahan baku. Pembelian dicatat sebagai pengeluaran keuangan.</div>
       <div class="form-actions mt-3"><button class="btn btn-primary" type="submit">Catat Pembelian &amp; Pengeluaran</button><button type="button" class="btn btn-secondary-soft" data-modal-close>Batal</button></div>
     </div>
   </form>
@@ -187,7 +188,7 @@ foreach ($bahan as $b) {
     <div class="col-md-4"><label class="form-label">Nama Bahan <span class="required-mark">*</span></label><input class="form-control" name="nama_bahan" id="bahanEditNama" required></div>
     <div class="col-md-4"><label class="form-label">Kadaluarsa <span class="required-mark">*</span></label><input class="form-control" type="date" name="tanggal_kadaluarsa" id="bahanEditKadaluarsa" required></div>
     <div class="col-md-6"><label class="form-label">Satuan <span class="required-mark">*</span></label><select class="form-select" name="satuan" id="bahanEditSatuan" required><option value="">Pilih satuan</option><option>gram</option><option>kilo</option><option>pcs</option></select></div>
-    <div class="col-md-6"><label class="form-label">Harga Satuan (Rp) <span class="required-mark">*</span></label><input class="form-control" type="number" name="harga" id="bahanEditHarga" min="0" step="0.01" required><div class="form-help">Stok tidak diubah dari form ini. Gunakan Beli / Tambah Stok agar riwayat pembelian tetap tercatat.</div></div>
+    <div class="col-md-6"><label class="form-label">Harga per Unit (Rp) <span class="required-mark">*</span></label><input class="form-control" type="number" name="harga" id="bahanEditHarga" min="0" step="0.01" required><div class="form-help">Stok tidak diubah dari form ini. Gunakan Beli / Tambah Stok agar riwayat pembelian tetap tercatat.</div></div>
     <div class="col-12 form-actions"><button class="btn btn-primary" type="submit">Simpan Perubahan</button><button type="button" class="btn btn-secondary-soft" data-modal-close>Batal</button></div>
   </form>
 </section>
@@ -203,7 +204,7 @@ foreach ($bahan as $b) {
     const harga = parseFloat(opt?.dataset.harga || '0');
     const satuan = opt?.dataset.satuan || '';
     const jumlah = parseFloat(qty.value || '0');
-    if (!select.value || !jumlah) { estimate.textContent = 'Pilih bahan dan jumlah untuk melihat estimasi total. Harga mengikuti master bahan baku.'; return; }
+    if (!select.value || !jumlah) { estimate.textContent = 'Pilih bahan dan jumlah untuk melihat estimasi total. Harga mengikuti master bahan baku. Pembelian dicatat sebagai pengeluaran keuangan.'; return; }
     estimate.textContent = 'Estimasi total: ' + rupiah(harga * jumlah) + ' (' + jumlah + ' ' + satuan + ' × ' + rupiah(harga) + '). Pengeluaran dicatat otomatis saat disimpan.';
   }
   select.addEventListener('change', refresh);
@@ -223,5 +224,13 @@ foreach ($bahan as $b) {
     set('bahanEditHarga', btn.dataset.harga);
     if (window.WMJ) WMJ.modal.open('#crudModal-bahanEdit');
   }));
+})();
+</script>
+
+<script>
+(function(){
+ const tabs=[...document.querySelectorAll('[data-bahan-tab]')], panels=[...document.querySelectorAll('[data-bahan-panel]')];
+ if(!tabs.length)return;
+ tabs.forEach(tab=>tab.addEventListener('click',()=>{const key=tab.dataset.bahanTab;tabs.forEach(t=>{const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',on?'true':'false');});panels.forEach(p=>p.hidden=p.dataset.bahanPanel!==key);}));
 })();
 </script>

@@ -855,3 +855,36 @@ html {
     margin: 0 18px 18px;
   }
 }
+
+/* Revisi stok baku tabs, paginasi tabel, dan drawer admin mobile */
+.bahan-stock-tabs{display:flex;gap:.45rem;flex-wrap:wrap;margin:0 0 1rem}
+.bahan-stock-tabs .admin-tab{min-width:110px}
+.bahan-stock-tab-panel[hidden]{display:none!important}
+.admin-table tr[hidden]{display:none!important}
+.admin-table-pagination{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;padding:.8rem 0;flex-wrap:wrap}
+.admin-table-pagination .pagination-label{font-size:.82rem;color:var(--muted,#68717b);min-width:130px;text-align:center}
+.admin-table-pagination button:disabled{opacity:.45;cursor:not-allowed}
+.recipe-row{padding:.7rem;border:1px solid var(--line,#e5e7eb);border-radius:12px;background:var(--surface,#fff)}
+.recipe-remove-row{width:100%;min-height:38px}
+.admin-sidebar-backdrop{display:none}
+@media(max-width:820px){
+ .admin-sidebar-backdrop{display:block;position:fixed;inset:0;z-index:1039;border:0;background:rgba(15,23,42,.46);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+ .admin-sidebar-backdrop.visible{opacity:1;visibility:visible}
+ .admin-sidebar{z-index:1040}
+ .admin-topbar{gap:.65rem;flex-wrap:wrap}
+ .admin-topbar-left{min-width:0;gap:.6rem}
+ .admin-topbar-left>div{min-width:0}
+ .admin-topbar-left strong{display:block;overflow-wrap:anywhere}
+ .admin-topbar-right{flex-wrap:wrap;gap:.5rem}
+ .admin-content,.ops-workspace{padding-left:12px!important;padding-right:12px!important}
+ .panel-header{align-items:flex-start;flex-direction:column;gap:.8rem}
+ .panel-header>.d-flex{width:100%}
+ .panel-header>.d-flex .btn{flex:1 1 auto}
+ .stat-grid{grid-template-columns:1fr!important}
+ .bahan-stock-tabs .admin-tab{flex:1 1 30%;min-width:0;padding:.65rem .4rem;font-size:.82rem}
+ .recipe-row{margin-left:0;margin-right:0}
+ .recipe-row .recipe-remove-row{width:auto}
+ .admin-table-pagination{justify-content:center}
+ .table-actions{flex-wrap:wrap;justify-content:flex-start}
+ .table-actions form{display:inline-flex}
+}

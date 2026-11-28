@@ -519,3 +519,28 @@ document.addEventListener('DOMContentLoaded',()=>{
   window.WMJ.toast=toast;
   window.WMJ.reveal=targets;
 })();
+
+// Admin mobile sidebar: backdrop click closes the drawer.
+document.addEventListener('DOMContentLoaded',()=>{
+ const sidebar=document.getElementById('adminSidebar');const toggle=document.querySelector('.admin-menu-toggle');if(!sidebar)return;
+ let backdrop=document.getElementById('adminSidebarBackdrop');if(!backdrop){backdrop=document.createElement('button');backdrop.type='button';backdrop.id='adminSidebarBackdrop';backdrop.className='admin-sidebar-backdrop';backdrop.setAttribute('aria-label','Tutup menu admin');sidebar.insertAdjacentElement('afterend',backdrop);}
+ const close=()=>sidebar.classList.remove('open');backdrop.addEventListener('click',close);
+ sidebar.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+ toggle?.addEventListener('click',()=>{sidebar.classList.toggle('open');backdrop.classList.toggle('visible',sidebar.classList.contains('open'));});
+ const sync=()=>backdrop.classList.toggle('visible',sidebar.classList.contains('open'));sidebar.addEventListener('transitionend',sync);
+});
+
+// Consistent 10-row pagination for admin data tables.
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelectorAll('.admin-table').forEach(table=>{
+  if(table.dataset.paginationReady==='1')return;table.dataset.paginationReady='1';
+  const body=table.tBodies[0];if(!body)return;const rows=[...body.rows];const size=10;if(rows.length<=size)return;
+  let page=0;const pages=Math.ceil(rows.length/size);const controls=document.createElement('div');controls.className='admin-table-pagination';
+  const prev=document.createElement('button');prev.type='button';prev.className='btn btn-secondary-soft btn-sm';prev.textContent='‹ Sebelumnya';
+  const label=document.createElement('span');label.className='pagination-label';
+  const next=document.createElement('button');next.type='button';next.className='btn btn-secondary-soft btn-sm';next.textContent='Berikutnya ›';
+  controls.append(prev,label,next);table.closest('.admin-table-wrap')?.insertAdjacentElement('afterend',controls);
+  const render=()=>{rows.forEach((r,i)=>r.hidden=!(i>=page*size&&i<(page+1)*size));label.textContent=`Halaman ${page+1} dari ${pages} · ${rows.length} baris`;prev.disabled=page===0;next.disabled=page===pages-1;};
+  prev.addEventListener('click',()=>{if(page>0){page--;render();}});next.addEventListener('click',()=>{if(page<pages-1){page++;render();}});render();
+ });
+});

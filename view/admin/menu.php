@@ -151,7 +151,7 @@ true);
           <button type="button" class="admin-modal-close" data-modal-close aria-label="Tutup formulir resep"><?= icon('x') ?></button>
         </div>
         <div class="modal-body">
-          <p class="text-muted-custom mb-3">Isi jumlah bahan untuk 1 porsi. Kosongkan bahan yang tidak dipakai. Resep ini dipakai untuk menyinkronkan stok bahan saat stok produk berubah.</p>
+          <p class="text-muted-custom mb-3">Isi bahan, jumlah takaran, satuan (kg/gram/pieces), dan catatan opsional. Sistem mengonversi kg↔gram sesuai satuan stok bahan ketika resep menyinkronkan stok.</p>
           <form method="post" action="<?=APP_URL?>/index.php?r=admin/save-recipe" class="recipe-form">
             <?=csrf_field()?>
             <input type="hidden" name="menu_id" value="<?=(int)$recipeMenu['id']?>">
@@ -159,18 +159,14 @@ true);
               <?php
 $existing = $recipeRows;
 $rowCount = max(2, count($existing) + 1);
-for($i=0; $i<$rowCount; $i++): $row=$existing[$i] ?? null;
+for($i=0; $i<$rowCount; $i++): $row=$existing[$i] ?? null; $unitDefault=$row ? ($row['satuan_resep'] ?? ($row['satuan']==='kilo'?'kg':($row['satuan']==='pcs'?'pieces':'gram'))) : 'gram';
 ?>
               <div class="row g-2 align-items-end recipe-row mb-2">
-                <div class="col-md-5"><label class="form-label">Bahan</label><select class="form-select" name="bahan_baku_id[]"><option value="">— Pilih bahan —</option><?php foreach($ingredients as $ing): ?><option value="<?=$ing['id']?>" <?= $row && (int)$row['bahan_baku_id']===(int)$ing['id'] ? 'selected' : '' ?>><?=e($ing['nama_bahan'])?> (<?=e($ing['satuan'])?>)</option><?php endforeach;
-?></select></div>
-                <div class="col-md-3"><label class="form-label">Jumlah</label><input class="form-control" type="number" name="jumlah[]" min="0" step="0.001" value="<?= $row ? e(rtrim(rtrim(number_format((float)$row['jumlah'],
-3,
-'.',
-''),
-'0'),
-'.')) : '' ?>" placeholder="0"></div>
-                <div class="col-md-4"><label class="form-label">Catatan</label><input class="form-control" name="keterangan[]" maxlength="120" value="<?=e($row['keterangan'] ?? '')?>" placeholder="Opsional"></div>
+                <div class="col-md-3"><label class="form-label">Bahan</label><select class="form-select recipe-ingredient" name="bahan_baku_id[]"><option value="">— Pilih bahan —</option><?php foreach($ingredients as $ing): ?><option value="<?=$ing['id']?>" data-stock-unit="<?=e($ing['satuan']==='kilo'?'kg':($ing['satuan']==='pcs'?'pieces':'gram'))?>" <?= $row && (int)$row['bahan_baku_id']===(int)$ing['id'] ? 'selected' : '' ?>><?=e($ing['nama_bahan'])?> (<?=e($ing['satuan'])?>)</option><?php endforeach; ?></select></div>
+                <div class="col-md-3"><label class="form-label">Jumlah</label><input class="form-control" type="number" name="jumlah[]" min="0" step="0.001" value="<?= $row ? e(rtrim(rtrim(number_format((float)$row['jumlah'],3,'.',''),'0'),'.')) : '' ?>" placeholder="0"></div>
+                <div class="col-md-2"><label class="form-label">Satuan</label><select class="form-select recipe-unit" name="satuan_resep[]"><option value="kg" <?=$unitDefault==='kg'?'selected':''?>>kg</option><option value="gram" <?=$unitDefault==='gram'?'selected':''?>>gram</option><option value="pieces" <?=$unitDefault==='pieces'?'selected':''?>>pieces</option></select></div>
+                <div class="col-md-3"><label class="form-label">Catatan</label><input class="form-control" name="keterangan[]" maxlength="120" value="<?=e($row['keterangan'] ?? '')?>" placeholder="Opsional"></div>
+                <div class="col-md-1"><button type="button" class="btn btn-outline-danger btn-sm recipe-remove-row" title="Hapus baris" aria-label="Hapus baris">×</button></div>
               </div>
               <?php endfor;
 ?>
@@ -407,6 +403,16 @@ document.getElementById('addRecipeRow')?.addEventListener('click',()=>{
   row.querySelectorAll('input').forEach(i=>i.value='');
   box.appendChild(row);
   row.querySelector('select')?.focus();
+  recipeUnitFilter(row);
+});
+function recipeUnitFilter(row){const ingredient=row.querySelector('.recipe-ingredient');const unit=row.querySelector('.recipe-unit');const stockUnit=ingredient?.selectedOptions[0]?.dataset.stockUnit||'';if(!unit)return;unit.querySelectorAll('option').forEach(option=>{option.disabled=stockUnit==='pieces'?option.value!=='pieces':(stockUnit?option.value==='pieces':false);});if(stockUnit&&unit.selectedOptions[0]?.disabled)unit.value=stockUnit;}
+document.querySelectorAll('#recipeRows .recipe-row').forEach(recipeUnitFilter);
+document.getElementById('recipeRows')?.addEventListener('change',event=>{
+  if(event.target.matches('.recipe-ingredient')){const row=event.target.closest('.recipe-row');const unit=row?.querySelector('.recipe-unit');const opt=event.target.selectedOptions[0];if(unit&&opt?.dataset.stockUnit)unit.value=opt.dataset.stockUnit;recipeUnitFilter(row);}
+});
+document.getElementById('recipeRows')?.addEventListener('click',event=>{
+  const remove=event.target.closest('.recipe-remove-row');if(!remove)return;
+  const rows=document.querySelectorAll('#recipeRows .recipe-row');if(rows.length>1)remove.closest('.recipe-row').remove();else{const row=remove.closest('.recipe-row');row.querySelectorAll('select,input').forEach(el=>el.value='');}
 });
 
 // Edit kategori/topping memakai data-atribut agar nama dengan tanda kutip tetap aman.

@@ -1,0 +1,54 @@
+# ============================================================
+# Warung Maem Jadoel — .gitignore
+# ============================================================
+
+# --- Kredensial & konfigurasi lokal -------------------------
+# .env berisi password database, SMTP, dan server key Midtrans.
+.env
+.env.*
+.env.example
+
+# --- Berkas unggahan pengguna (konten dinamis) --------------
+# Foto produk yang diunggah lewat panel admin.
+/public/assets/uploads/menu/*
+!/public/assets/uploads/menu/.gitkeep
+# Gambar QRIS milik toko (diunggah lewat menu Keuangan).
+/public/assets/images/payment/qris-warung.*
+
+# --- Log & berkas sementara ---------------------------------
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.swp
+*~
+/cache/
+/tmp/
+
+# --- Berkas cadangan database -------------------------------
+*.sql.gz
+*.sql.zip
+*.dump
+
+# --- Alat pengembangan --------------------------------------
+composer.phar
+.php-cs-fixer.cache
+.phpunit.result.cache
+
+# --- Editor & IDE -------------------------------------------
+.vscode/
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# --- Sistem operasi -----------------------------------------
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
